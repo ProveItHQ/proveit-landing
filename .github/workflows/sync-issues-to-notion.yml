@@ -4,7 +4,7 @@ name: Sync Issues to Notion
 on:
   push:
     branches:
-      - "(root)"
+      - main
   issues:
     types: [opened, edited, closed, reopened]
   workflow_dispatch:
