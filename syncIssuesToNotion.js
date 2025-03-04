@@ -102,9 +102,10 @@ const EMAILS = {
         //   },
         // },
         AssignedTo: {
-          people: issue.assignees.map((assignee) => ({
-            person: { id: EMAILS[assignee.login] },
-          })),
+          people: issue.assignees
+            .map((assignee) => EMAILS[assignee.login]) // Get Notion user IDs
+            .filter((id) => id) // Remove undefined values (in case of unmatched logins)
+            .map((id) => ({ id: id })), // Format correctly
         },
       };
 
