@@ -11,7 +11,7 @@ const EMAILS = {
 
 const graphqlWithAuth = graphql.defaults({
   headers: {
-    authorization: `token ${process.env.GITHUB_TOKEN}`,
+    authorization: `bearer ${process.env.GITHUB_TOKEN}`,
   },
 });
 
