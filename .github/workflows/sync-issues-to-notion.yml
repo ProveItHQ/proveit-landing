@@ -1,23 +1,33 @@
-name: Sync GitHub Issues to Notion
+name: Sync Issues to Notion
+
+# Trigger on pushes to the (root) branch and on issue events.
 on:
-  issues:
-    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled]
-  workflow_dispatch:
   push:
     branches:
-      - (root)
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-  actions: read
+      - "(root)"
+  issues:
+    types: [opened, edited, closed, reopened]
+  workflow_dispatch:
+
 jobs:
-  sync-issues:
+  sync-notion:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/(root)' # Only run on (root) branch
+    # This job will run using the version of the workflow on the (root) branch.
     steps:
-      - name: Sync to Notion
-        uses: tryfabric/notion-github-action@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          notion-token: ${{ secrets.NOTION_TOKEN }}
-          notion-db: ${{ secrets.NOTION_DATABASE_ID }}
+          node-version: "14"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run sync script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node syncIssuesToNotion.js

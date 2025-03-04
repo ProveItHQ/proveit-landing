@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@notionhq/client": "^2.2.16",
+    "@octokit/rest": "^21.1.1"
+  }
+}
