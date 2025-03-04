@@ -1,5 +1,6 @@
-name: Trigger Notion Sync
+name: Sync Issues to Notion
 
+# Trigger on pushes to the (root) branch and on issue events.
 on:
   push:
     branches:
@@ -8,55 +9,38 @@ on:
     types:
       [
         opened,
+        edited,
         closed,
         reopened,
-        edited,
-        assigned,
-        unassigned,
         labeled,
         unlabeled,
+        assigned,
+        unassigned,
       ]
-  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
 
 jobs:
-  trigger-sync:
+  sync-notion:
     runs-on: ubuntu-latest
+    # This job will run using the version of the workflow on the (root) branch.
     steps:
-      - name: Extract issue data
-        id: extract-issue
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { issue } = context.payload;
-            const assignees = issue.assignees?.map(a => a.login).join(',') || '';
-            const labels = issue.labels?.map(l => l.name).join(',') || '';
-            return {
-              title: issue.title,
-              body: issue.body || '',
-              number: issue.number.toString(),
-              state: issue.state || 'open',
-              labels: labels,
-              assignees: assignees
-            };
-          result-json: issue_data
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Trigger Central Workflow
-        uses: actions/github-script@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.CENTRAL_REPO_ACCESS_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: 'ProveItHQ',
-              repo: 'notion-workflows',
-              workflow_id: 'sync-issues-to-notion.yml',
-              ref: 'main',
-              inputs: {
-                NOTION_DATABASE_ID: '${{ secrets.NOTION_DATABASE_ID }}',
-                ISSUE_TITLE: '${{ steps.extract-issue.outputs.title }}',
-                ISSUE_BODY: '${{ steps.extract-issue.outputs.body }}',
-                ISSUE_NUMBER: '${{ steps.extract-issue.outputs.number }}',
-                ISSUE_STATE: '${{ steps.extract-issue.outputs.state }}',
-                ISSUE_LABELS: '${{ steps.extract-issue.outputs.labels }}',
-                ISSUE_ASSIGNEES: '${{ steps.extract-issue.outputs.assignees }}'
-              }
-            });
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run sync script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node syncIssuesToNotion.js
