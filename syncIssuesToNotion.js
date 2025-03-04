@@ -59,33 +59,23 @@ const EMAILS = {
       let projectDetails;
       try {
         const { repository } = await octokit.graphql(
-          `
-          query($owner: String!, $repo: String!, $issueNumber: Int!) {
+          `query($owner: String!, $repo: String!, $issueNumber: Int!) {
             repository(owner: $owner, name: $repo) {
               issue(number: $issueNumber) {
-                projectsV2Items(first: 10) {
+                projectCards(first: 10) {
                   nodes {
-                    project {
-                      title
+                    column {
+                      name
                     }
-                    fieldValues(first: 10) {
-                      nodes {
-                        ... on ProjectV2ItemFieldTextValue {
-                          field { name }
-                          text
-                        }
-                        ... on ProjectV2ItemFieldNumberValue {
-                          field { name }
-                          number
-                        }
-                      }
+                    project {
+                      name
                     }
                   }
                 }
               }
             }
           }
-          `,
+  `,
           { owner, repo, issueNumber: issue.number }
         );
         // If there are multiple project items, you can adjust which one to use.
