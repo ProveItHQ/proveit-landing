@@ -69,6 +69,7 @@ const EMAILS = {
       console.log(issue);
 
       // Prepare the property payload for Notion
+      // Prepare the property payload for Notion
       const propertiesPayload = {
         "Issue Number": { number: issue.number },
         Title: {
@@ -86,7 +87,6 @@ const EMAILS = {
           },
         },
         URL: { url: issue.html_url },
-        // Optionally include the issue body; Notion supports rich text.
         Body: {
           rich_text: [
             {
@@ -106,6 +106,11 @@ const EMAILS = {
             .map((assignee) => EMAILS[assignee.login]) // Get Notion user IDs
             .filter((id) => id) // Remove undefined values (in case of unmatched logins)
             .map((id) => ({ id: id })), // Format correctly
+        },
+        CreationDate: {
+          date: {
+            start: issue.created_at, // GitHub provides this in ISO format
+          },
         },
       };
 

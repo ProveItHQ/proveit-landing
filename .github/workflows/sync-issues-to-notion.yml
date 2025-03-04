@@ -6,7 +6,17 @@ on:
     branches:
       - main
   issues:
-    types: [opened, edited, closed, reopened]
+    types:
+      [
+        opened,
+        edited,
+        closed,
+        reopened,
+        labeled,
+        unlabeled,
+        assigned,
+        unassigned,
+      ]
 
 permissions:
   issues: write
