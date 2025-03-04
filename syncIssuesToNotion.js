@@ -213,49 +213,6 @@ query ($issueId: ID!) {
         });
       }
 
-      // If project details were found, add them to the Notion payload
-      if (projectData) {
-        console.log(projectData);
-        // Extract the project title and custom fields
-        const projectTitle = projectDetails.project.title;
-        const customFields = {};
-        projectDetails.fieldValues.nodes.forEach((node) => {
-          const fieldName = node.field.name;
-          if (fieldName === "Priority") {
-            customFields.Priority = node.text || node.number;
-          }
-          if (fieldName === "Size") {
-            customFields.Size = node.number;
-          }
-          if (fieldName === "Estimate") {
-            customFields.Estimate = node.number;
-          }
-          if (fieldName === "Iteration") {
-            customFields.Iteration = node.text || node.number;
-          }
-        });
-        // Map these values to your Notion properties
-        propertiesPayload.Project = {
-          rich_text: [{ text: { content: projectTitle } }],
-        };
-        if (customFields.Priority) {
-          propertiesPayload.Priority = {
-            select: { name: customFields.Priority },
-          };
-        }
-        if (customFields.Size) {
-          propertiesPayload.Size = { number: customFields.Size };
-        }
-        if (customFields.Estimate) {
-          propertiesPayload.Estimate = { number: customFields.Estimate };
-        }
-        if (customFields.Iteration) {
-          propertiesPayload.Iteration = {
-            select: { name: customFields.Iteration },
-          };
-        }
-      }
-
       // Query Notion to see if the page already exists based on "Issue Number"
       const queryResponse = await notion.databases.query({
         database_id: notionDatabaseId,
