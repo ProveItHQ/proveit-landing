@@ -32,5 +32,5 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_NOTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.NOTION_GITHUB_TOKEN }}
         run: node syncIssuesToNotion.js
