@@ -2,4 +2,4 @@
 
 Landing Page for ProveIt
 
-`main` uses workflows
+`main` uses workflows (2x)
