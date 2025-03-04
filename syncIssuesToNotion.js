@@ -248,7 +248,7 @@ query ($issueId: ID!) {
       }
 
       // If project details were found, add them to the Notion payload
-      if (projectDetails) {
+      if (projectData) {
         console.log(projectDetails);
         // Extract the project title and custom fields
         const projectTitle = projectDetails.project.title;
