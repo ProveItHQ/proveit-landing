@@ -98,7 +98,7 @@ const EMAILS = {
         },
         Type: {
           status: {
-            name: issue.type,
+            name: issue.labels.name,
           },
         },
         AssignedTo: {
