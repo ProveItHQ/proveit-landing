@@ -15,23 +15,29 @@ const graphqlWithAuth = graphql.defaults({
   },
 });
 
+function calculateEndDate(startDate, durationDays) {
+  const date = new Date(startDate);
+  date.setDate(date.getDate() + durationDays);
+  return date.toISOString().split("T")[0];
+}
+
 const getProjectFieldsQuery = `
 query ($issueId: ID!) {
   node(id: $issueId) {
     ... on Issue {
       projectItems(first: 20) {
         nodes {
-          id
           project {
             ... on ProjectV2 {
-              title
               fields(first: 20) {
                 nodes {
-                  ... on ProjectV2SingleSelectField {
-                    name
-                    options {
-                      id
-                      name
+                  ... on ProjectV2IterationField {
+                    configuration {
+                      iterations {
+                        id
+                        startDate
+                        duration
+                      }
                     }
                   }
                 }
@@ -40,24 +46,10 @@ query ($issueId: ID!) {
           }
           fieldValues(first: 20) {
             nodes {
-              ... on ProjectV2ItemFieldSingleSelectValue {
-                name
-                field {
-                  ... on ProjectV2SingleSelectField {
-                    name
-                  }
-                }
-              }
-              ... on ProjectV2ItemFieldNumberValue {
-                number
-                field {
-                  ... on ProjectV2Field {
-                    name
-                  }
-                }
-              }
               ... on ProjectV2ItemFieldIterationValue {
-                title
+                iterationId
+                startDate
+                duration
                 field {
                   ... on ProjectV2IterationField {
                     name
@@ -184,6 +176,12 @@ query ($issueId: ID!) {
             .filter((id) => id)
             .map((id) => ({ id })),
         },
+        IterationDate: {
+          date: {
+            start: null,
+            end: null,
+          },
+        },
         CreationDate: {
           date: { start: issue.created_at },
         },
@@ -236,6 +234,13 @@ query ($issueId: ID!) {
                 break;
               case "Iteration":
                 propertiesPayload.Iteration.select.name = field.title || "";
+                if (field.startDate && field.duration) {
+                  propertiesPayload.IterationDate.date.start = field.startDate;
+                  propertiesPayload.IterationDate.date.end = calculateEndDate(
+                    field.startDate,
+                    field.duration
+                  );
+                }
                 break;
             }
           });
