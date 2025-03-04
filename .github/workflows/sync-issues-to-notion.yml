@@ -9,6 +9,9 @@ on:
     types: [opened, edited, closed, reopened]
   workflow_dispatch:
 
+permissions:
+  issues: read
+
 jobs:
   sync-notion:
     runs-on: ubuntu-latest
