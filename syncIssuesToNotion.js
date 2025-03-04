@@ -6,7 +6,8 @@ const EMAILS = {
   Priyanshsarvaiya: "priyanshsar96@gmail.com",
   Luvveer: "luvveerlamba@gmail.com",
   cys278: "yasir.chow2002@gmail.com",
-}(async function () {
+};
+(async function () {
   try {
     // Read environment variables
     const notionToken = process.env.NOTION_TOKEN;
