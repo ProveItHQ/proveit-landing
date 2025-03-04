@@ -66,7 +66,6 @@ const EMAILS = {
           },
         },
       });
-      console.log(issue);
 
       // Prepare the property payload for Notion
       // Prepare the property payload for Notion
