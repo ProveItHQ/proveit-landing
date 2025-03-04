@@ -1,5 +1,5 @@
-const { Octokit } = require("@octokit/rest");
-const { Client } = require("@notionhq/client");
+import { Octokit } from "@octokit/rest";
+import Client from "@notionhq/client";
 
 (async function () {
   try {
