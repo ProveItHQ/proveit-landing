@@ -1,6 +1,9 @@
 name: Trigger Notion Sync
 
 on:
+  push:
+    branches:
+      - main
   issues:
     types:
       [
