@@ -112,6 +112,49 @@ query ($issueId: ID!) {
       // Skip pull requests if not required
       if (issue.pull_request) continue;
 
+      // Execute a GraphQL query to get project details for the issue
+      let projectDetails;
+      try {
+        const { repository } = await octokit.graphql(
+          `query($owner: String!, $repo: String!, $issueNumber: Int!) {
+            repository(owner: $owner, name: $repo) {
+              issue(number: $issueNumber) {
+                projectCards(first: 10) {
+                  nodes {
+                    column {
+                      name
+                    }
+                    project {
+                      name
+                    }
+                    fieldValues(first: 10) {
+                      nodes {
+                        field {
+                          name
+                        }
+                        text
+                        number
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          `,
+          { owner, repo, issueNumber: issue.number }
+        );
+        // Use projectCards consistently
+        if (repository.issue.projectCards.nodes.length > 0) {
+          projectDetails = repository.issue.projectCards.nodes[0];
+        }
+      } catch (err) {
+        console.error(
+          `Error fetching project details for issue #${issue.number}:`,
+          err
+        );
+      }
+
       // Prepare the Notion properties payload with standard issue properties
       const propertiesPayload = {
         "Issue Number": { number: issue.number },
@@ -150,12 +193,12 @@ query ($issueId: ID!) {
         },
         Priority: {
           select: {
-            name: null,
+            name: "",
           },
         },
         Size: {
           select: {
-            name: null,
+            name: "",
           },
         },
         Estimate: {
@@ -163,7 +206,7 @@ query ($issueId: ID!) {
         },
         Iteration: {
           select: {
-            name: null,
+            name: "",
           },
         },
         IterationDate: {
@@ -174,7 +217,7 @@ query ($issueId: ID!) {
         },
       };
 
-      // Fetch project-related data
+      // Fetch project-related data using GraphQL query for project fields
       const projectData = await graphqlWithAuth(getProjectFieldsQuery, {
         issueId: issue.node_id,
       });
@@ -182,17 +225,26 @@ query ($issueId: ID!) {
       // Process project fields
       if (projectData.node?.projectItems?.nodes) {
         projectData.node.projectItems.nodes.forEach((projectItem) => {
-          const projectName = projectItem.project?.title;
+          const projectName = projectItem.project?.name;
           if (projectName) {
             propertiesPayload.Project.multi_select.push({ name: projectName });
           }
 
           projectItem.fieldValues.nodes.forEach((field) => {
             switch (field?.field?.name) {
+              case "Priority":
+                propertiesPayload.Priority.select.name = field.text || "";
+                break;
+              case "Size":
+                propertiesPayload.Size.select.name = field.text || "";
+                break;
+              case "Estimate":
+                propertiesPayload.Estimate.number = field.number || null;
+                break;
               case "Iteration":
-                propertiesPayload.Iteration.select.name = field.title || "";
-
-                // Get iteration configuration from project fields
+                propertiesPayload.Iteration.select.name = field.text || "";
+                break;
+              case "IterationDate":
                 const iterationField = projectItem.project?.fields?.nodes?.find(
                   (n) => n?.configuration?.iterations
                 );
@@ -216,6 +268,66 @@ query ($issueId: ID!) {
             }
           });
         });
+      }
+
+      // If project details were found, add them to the Notion payload
+      if (projectDetails) {
+        console.log(projectDetails);
+        // Extract the project title and custom fields
+        const projectTitle = projectDetails.project.name;
+        const customFields = {};
+        projectDetails.fieldValues.nodes.forEach((node) => {
+          const fieldName = node.field.name;
+          if (fieldName === "Priority") {
+            customFields.Priority = node.text || node.number;
+          }
+          if (fieldName === "Size") {
+            customFields.Size = node.number;
+          }
+          if (fieldName === "Estimate") {
+            customFields.Estimate = node.number;
+          }
+          if (fieldName === "Iteration") {
+            customFields.Iteration = node.text || node.number;
+          }
+          if (fieldName === "IterationDate") {
+            customFields.IterationDate = node.text;
+          }
+        });
+        // Map these values to your Notion properties
+        // Assuming Project is a multi-select field, add the project title if not already present
+        if (
+          !propertiesPayload.Project.multi_select.find(
+            (p) => p.name === projectTitle
+          )
+        ) {
+          propertiesPayload.Project.multi_select.push({ name: projectTitle });
+        }
+        if (customFields.Priority) {
+          propertiesPayload.Priority = {
+            select: { name: customFields.Priority },
+          };
+        }
+        if (customFields.Size) {
+          propertiesPayload.Size = { select: { name: customFields.Size } };
+        }
+        if (customFields.Estimate) {
+          propertiesPayload.Estimate = { number: customFields.Estimate };
+        }
+        if (customFields.Iteration) {
+          propertiesPayload.Iteration = {
+            select: { name: customFields.Iteration },
+          };
+        }
+        // Fix for IterationDate: if not already set, use the custom field value
+        if (
+          customFields.IterationDate &&
+          !propertiesPayload.IterationDate.date.start
+        ) {
+          propertiesPayload.IterationDate.date.start =
+            customFields.IterationDate;
+          // Optionally, you can set an end date here if needed.
+        }
       }
 
       // Query Notion to see if the page already exists based on "Issue Number"
