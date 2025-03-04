@@ -1,6 +1,13 @@
 import { Octokit } from "@octokit/rest";
 import { Client } from "@notionhq/client";
 
+const EMAILS = {
+    "Undiluted7027": "sja164@sfu.ca",
+    "Priyanshsarvaiya": "priyanshsar96@gmail.com",
+    "Luvveer": "luvveerlamba@gmail.com",
+    "cys278": "yasir.chow2002@gmail.com",
+}
+
 (async function () {
   try {
     // Read environment variables
@@ -94,10 +101,11 @@ import { Client } from "@notionhq/client";
           status: {
             name: issue.type,
           },
-          AssignedTo: {
+        AssignedTo: {
             people: issue.assignees.map((assignee) => ({
-              name: assignee.login,
-            })),
+                person: {email: EMAILS[assignee.login]}
+            }))
+},
           },
         },
       };
