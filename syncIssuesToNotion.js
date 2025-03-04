@@ -96,11 +96,11 @@ const EMAILS = {
             },
           ],
         },
-        // Type: {
-        //   status: {
-        //     name: issue.labels.name,
-        //   },
-        // },
+        Type: {
+          multi_select: issue.labels.map((label) => ({
+            name: label.name,
+          })),
+        },
         AssignedTo: {
           people: issue.assignees
             .map((assignee) => EMAILS[assignee.login]) // Get Notion user IDs
