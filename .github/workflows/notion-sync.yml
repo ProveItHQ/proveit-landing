@@ -16,6 +16,7 @@ on:
         labeled,
         unlabeled,
       ]
+  workflow_dispatch:
 
 jobs:
   trigger-sync:
