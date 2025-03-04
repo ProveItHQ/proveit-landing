@@ -15,29 +15,23 @@ const graphqlWithAuth = graphql.defaults({
   },
 });
 
-function calculateEndDate(startDate, durationDays) {
-  const date = new Date(startDate);
-  date.setDate(date.getDate() + durationDays);
-  return date.toISOString().split("T")[0];
-}
-
 const getProjectFieldsQuery = `
 query ($issueId: ID!) {
   node(id: $issueId) {
     ... on Issue {
       projectItems(first: 20) {
         nodes {
+          id
           project {
             ... on ProjectV2 {
+              title
               fields(first: 20) {
                 nodes {
-                  ... on ProjectV2IterationField {
-                    configuration {
-                      iterations {
-                        id
-                        startDate
-                        duration
-                      }
+                  ... on ProjectV2SingleSelectField {
+                    name
+                    options {
+                      id
+                      name
                     }
                   }
                 }
@@ -46,10 +40,24 @@ query ($issueId: ID!) {
           }
           fieldValues(first: 20) {
             nodes {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+                field {
+                  ... on ProjectV2SingleSelectField {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldNumberValue {
+                number
+                field {
+                  ... on ProjectV2Field {
+                    name
+                  }
+                }
+              }
               ... on ProjectV2ItemFieldIterationValue {
-                iterationId
-                startDate
-                duration
+                title
                 field {
                   ... on ProjectV2IterationField {
                     name
@@ -127,26 +135,17 @@ query ($issueId: ID!) {
                     project {
                       name
                     }
-                    fieldValues(first: 10) {
-                      nodes {
-                        field {
-                          name
-                        }
-                        text
-                        number
-                      }
-                    }
                   }
                 }
               }
             }
           }
-          `,
+  `,
           { owner, repo, issueNumber: issue.number }
         );
-        // Use projectCards consistently
-        if (repository.issue.projectCards.nodes.length > 0) {
-          projectDetails = repository.issue.projectCards.nodes[0];
+        // If there are multiple project items, you can adjust which one to use.
+        if (repository.issue.projectsV2Items.nodes.length > 0) {
+          projectDetails = repository.issue.projectsV2Items.nodes[0];
         }
       } catch (err) {
         console.error(
@@ -209,15 +208,9 @@ query ($issueId: ID!) {
             name: "",
           },
         },
-        IterationDate: {
-          date: {
-            start: null,
-            end: null,
-          },
-        },
       };
 
-      // Fetch project-related data using GraphQL query for project fields
+      // Fetch project-related data
       const projectData = await graphqlWithAuth(getProjectFieldsQuery, {
         issueId: issue.node_id,
       });
@@ -225,7 +218,7 @@ query ($issueId: ID!) {
       // Process project fields
       if (projectData.node?.projectItems?.nodes) {
         projectData.node.projectItems.nodes.forEach((projectItem) => {
-          const projectName = projectItem.project?.name;
+          const projectName = projectItem.project?.title;
           if (projectName) {
             propertiesPayload.Project.multi_select.push({ name: projectName });
           }
@@ -233,37 +226,16 @@ query ($issueId: ID!) {
           projectItem.fieldValues.nodes.forEach((field) => {
             switch (field?.field?.name) {
               case "Priority":
-                propertiesPayload.Priority.select.name = field.text || "";
+                propertiesPayload.Priority.select.name = field.name || "";
                 break;
               case "Size":
-                propertiesPayload.Size.select.name = field.text || "";
+                propertiesPayload.Size.select.name = field.name || "";
                 break;
               case "Estimate":
                 propertiesPayload.Estimate.number = field.number || null;
                 break;
               case "Iteration":
-                propertiesPayload.Iteration.select.name = field.text || "";
-                break;
-              case "IterationDate":
-                const iterationField = projectItem.project?.fields?.nodes?.find(
-                  (n) => n?.configuration?.iterations
-                );
-
-                if (iterationField?.configuration?.iterations) {
-                  const matchedIteration =
-                    iterationField.configuration.iterations.find(
-                      (iter) => iter.id === field.iterationId
-                    );
-
-                  if (matchedIteration) {
-                    propertiesPayload.IterationDate.date.start =
-                      matchedIteration.startDate;
-                    propertiesPayload.IterationDate.date.end = calculateEndDate(
-                      matchedIteration.startDate,
-                      matchedIteration.duration
-                    );
-                  }
-                }
+                propertiesPayload.Iteration.select.name = field.title || "";
                 break;
             }
           });
@@ -274,7 +246,7 @@ query ($issueId: ID!) {
       if (projectDetails) {
         console.log(projectDetails);
         // Extract the project title and custom fields
-        const projectTitle = projectDetails.project.name;
+        const projectTitle = projectDetails.project.title;
         const customFields = {};
         projectDetails.fieldValues.nodes.forEach((node) => {
           const fieldName = node.field.name;
@@ -290,26 +262,18 @@ query ($issueId: ID!) {
           if (fieldName === "Iteration") {
             customFields.Iteration = node.text || node.number;
           }
-          if (fieldName === "IterationDate") {
-            customFields.IterationDate = node.text;
-          }
         });
         // Map these values to your Notion properties
-        // Assuming Project is a multi-select field, add the project title if not already present
-        if (
-          !propertiesPayload.Project.multi_select.find(
-            (p) => p.name === projectTitle
-          )
-        ) {
-          propertiesPayload.Project.multi_select.push({ name: projectTitle });
-        }
+        propertiesPayload.Project = {
+          rich_text: [{ text: { content: projectTitle } }],
+        };
         if (customFields.Priority) {
           propertiesPayload.Priority = {
             select: { name: customFields.Priority },
           };
         }
         if (customFields.Size) {
-          propertiesPayload.Size = { select: { name: customFields.Size } };
+          propertiesPayload.Size = { number: customFields.Size };
         }
         if (customFields.Estimate) {
           propertiesPayload.Estimate = { number: customFields.Estimate };
@@ -318,15 +282,6 @@ query ($issueId: ID!) {
           propertiesPayload.Iteration = {
             select: { name: customFields.Iteration },
           };
-        }
-        // Fix for IterationDate: if not already set, use the custom field value
-        if (
-          customFields.IterationDate &&
-          !propertiesPayload.IterationDate.date.start
-        ) {
-          propertiesPayload.IterationDate.date.start =
-            customFields.IterationDate;
-          // Optionally, you can set an end date here if needed.
         }
       }
 
