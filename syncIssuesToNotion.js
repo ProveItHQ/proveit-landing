@@ -95,9 +95,9 @@ import { Client } from "@notionhq/client";
             name: issue.type,
           },
           AssignedTo: {
-            people: {
-              name: issue.user.properties.email,
-            },
+            person: issue.assignees.map((assignee) => ({
+              name: assignee.login,
+            })),
           },
         },
       };
