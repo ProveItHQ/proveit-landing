@@ -74,7 +74,7 @@ import { Client } from "@notionhq/client";
           ],
         },
         State: {
-          select: {
+          status: {
             name: issue.state, // e.g., "open" or "closed"
           },
         },
