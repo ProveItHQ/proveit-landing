@@ -2,10 +2,10 @@ import { Octokit } from "@octokit/rest";
 import { Client } from "@notionhq/client";
 
 const EMAILS = {
-  Undiluted7027: "sja164@sfu.ca",
-  Priyanshsarvaiya: "priyanshsar96@gmail.com",
-  Luvveer: "luvveerlamba@gmail.com",
-  cys278: "yasir.chow2002@gmail.com",
+  Undiluted7027: "63f2d7a7-cd6f-4dd3-b288-35f1cc347e43",
+  Priyanshsarvaiya: "3c8638d1-46d6-453d-bd7f-d25b9f18188d",
+  Luvveer: "4efbf84a-b07f-4be3-a8c8-3854751f746a",
+  cys278: "1abd872b-594c-816f-96f5-0002670635e7",
 };
 (async function () {
   try {
@@ -103,7 +103,7 @@ const EMAILS = {
         // },
         AssignedTo: {
           people: issue.assignees.map((assignee) => ({
-            person: { email: EMAILS[assignee.login] },
+            person: { id: EMAILS[assignee.login] },
           })),
         },
       };
