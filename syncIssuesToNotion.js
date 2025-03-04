@@ -150,12 +150,12 @@ query ($issueId: ID!) {
         },
         Priority: {
           select: {
-            name: "",
+            name: null,
           },
         },
         Size: {
           select: {
-            name: "",
+            name: null,
           },
         },
         Estimate: {
@@ -163,7 +163,7 @@ query ($issueId: ID!) {
         },
         Iteration: {
           select: {
-            name: "",
+            name: null,
           },
         },
         IterationDate: {
@@ -189,23 +189,28 @@ query ($issueId: ID!) {
 
           projectItem.fieldValues.nodes.forEach((field) => {
             switch (field?.field?.name) {
-              case "Priority":
-                propertiesPayload.Priority.select.name = field.name || "";
-                break;
-              case "Size":
-                propertiesPayload.Size.select.name = field.name || "";
-                break;
-              case "Estimate":
-                propertiesPayload.Estimate.number = field.number || null;
-                break;
               case "Iteration":
                 propertiesPayload.Iteration.select.name = field.title || "";
-                if (field.startDate && field.duration) {
-                  propertiesPayload.IterationDate.date.start = field.startDate;
-                  propertiesPayload.IterationDate.date.end = calculateEndDate(
-                    field.startDate,
-                    field.duration
-                  );
+
+                // Get iteration configuration from project fields
+                const iterationField = projectItem.project?.fields?.nodes?.find(
+                  (n) => n?.configuration?.iterations
+                );
+
+                if (iterationField?.configuration?.iterations) {
+                  const matchedIteration =
+                    iterationField.configuration.iterations.find(
+                      (iter) => iter.id === field.iterationId
+                    );
+
+                  if (matchedIteration) {
+                    propertiesPayload.IterationDate.date.start =
+                      matchedIteration.startDate;
+                    propertiesPayload.IterationDate.date.end = calculateEndDate(
+                      matchedIteration.startDate,
+                      matchedIteration.duration
+                    );
+                  }
                 }
                 break;
             }
