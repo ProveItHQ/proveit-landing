@@ -112,40 +112,6 @@ query ($issueId: ID!) {
       // Skip pull requests if not required
       if (issue.pull_request) continue;
 
-      // Execute a GraphQL query to get project details for the issue
-      let projectDetails;
-      try {
-        const { repository } = await octokit.graphql(
-          `query($owner: String!, $repo: String!, $issueNumber: Int!) {
-            repository(owner: $owner, name: $repo) {
-              issue(number: $issueNumber) {
-                projectCards(first: 10) {
-                  nodes {
-                    column {
-                      name
-                    }
-                    project {
-                      name
-                    }
-                  }
-                }
-              }
-            }
-          }
-  `,
-          { owner, repo, issueNumber: issue.number }
-        );
-        // If there are multiple project items, you can adjust which one to use.
-        if (repository.issue.projectsV2Items.nodes.length > 0) {
-          projectDetails = repository.issue.projectsV2Items.nodes[0];
-        }
-      } catch (err) {
-        console.error(
-          `Error fetching project details for issue #${issue.number}:`,
-          err
-        );
-      }
-
       // Prepare the Notion properties payload with standard issue properties
       const propertiesPayload = {
         "Issue Number": { number: issue.number },
