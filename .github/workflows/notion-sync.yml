@@ -40,7 +40,7 @@ jobs:
           fi
 
       - name: Trigger Central Workflow
-        uses: peter-evans/repository-dispatch@v2
+        uses: ProveItHQ/notion-workflows/.github/workflows/handle-repo-dispatch@v1
         with:
           token: ${{ secrets.CENTRAL_REPO_ACCESS_TOKEN }}
           repository: ProveItHQ/notion-workflows
