@@ -1,4 +1,5 @@
 import { Octokit } from "@octokit/rest";
+import { graphql } from "@octokit/graphql";
 import { Client } from "@notionhq/client";
 
 const EMAILS = {
@@ -7,6 +8,70 @@ const EMAILS = {
   Luvveer: "4efbf84a-b07f-4be3-a8c8-3854751f746a",
   cys278: "1abd872b-594c-816f-96f5-0002670635e7",
 };
+
+const graphqlWithAuth = graphql.defaults({
+  headers: {
+    authorization: `token ${process.env.GITHUB_TOKEN}`,
+  },
+});
+
+const getProjectFieldsQuery = `
+query ($issueId: ID!) {
+  node(id: $issueId) {
+    ... on Issue {
+      projectItems(first: 20) {
+        nodes {
+          id
+          project {
+            ... on ProjectV2 {
+              title
+              fields(first: 20) {
+                nodes {
+                  ... on ProjectV2SingleSelectField {
+                    name
+                    options {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          fieldValues(first: 20) {
+            nodes {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+                field {
+                  ... on ProjectV2SingleSelectField {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldNumberValue {
+                number
+                field {
+                  ... on ProjectV2Field {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldIterationValue {
+                title
+                field {
+                  ... on ProjectV2IterationField {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;
 
 (async function () {
   try {
@@ -122,7 +187,60 @@ const EMAILS = {
         CreationDate: {
           date: { start: issue.created_at },
         },
+        Project: {
+          multi_select: [],
+        },
+        Priority: {
+          select: {
+            name: "",
+          },
+        },
+        Size: {
+          select: {
+            name: "",
+          },
+        },
+        Estimate: {
+          number: null,
+        },
+        Iteration: {
+          select: {
+            name: "",
+          },
+        },
       };
+
+      // Fetch project-related data
+      const projectData = await graphqlWithAuth(getProjectFieldsQuery, {
+        issueId: issue.node_id,
+      });
+
+      // Process project fields
+      if (projectData.node?.projectItems?.nodes) {
+        projectData.node.projectItems.nodes.forEach((projectItem) => {
+          const projectName = projectItem.project?.title;
+          if (projectName) {
+            propertiesPayload.Project.multi_select.push({ name: projectName });
+          }
+
+          projectItem.fieldValues.nodes.forEach((field) => {
+            switch (field?.field?.name) {
+              case "Priority":
+                propertiesPayload.Priority.select.name = field.name || "";
+                break;
+              case "Size":
+                propertiesPayload.Size.select.name = field.name || "";
+                break;
+              case "Estimate":
+                propertiesPayload.Estimate.number = field.number || null;
+                break;
+              case "Iteration":
+                propertiesPayload.Iteration.select.name = field.title || "";
+                break;
+            }
+          });
+        });
+      }
 
       // If project details were found, add them to the Notion payload
       if (projectDetails) {
