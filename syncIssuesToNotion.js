@@ -1,5 +1,5 @@
 import { Octokit } from "@octokit/rest";
-import Client from "@notionhq/client";
+import { Client } from "@notionhq/client";
 
 (async function () {
   try {
