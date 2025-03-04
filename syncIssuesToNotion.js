@@ -96,11 +96,11 @@ const EMAILS = {
             },
           ],
         },
-        Type: {
-          status: {
-            name: issue.labels.name,
-          },
-        },
+        // Type: {
+        //   status: {
+        //     name: issue.labels.name,
+        //   },
+        // },
         AssignedTo: {
           people: issue.assignees.map((assignee) => ({
             person: { email: EMAILS[assignee.login] },
