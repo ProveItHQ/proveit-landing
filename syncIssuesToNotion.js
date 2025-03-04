@@ -176,12 +176,6 @@ query ($issueId: ID!) {
             .filter((id) => id)
             .map((id) => ({ id })),
         },
-        IterationDate: {
-          date: {
-            start: null,
-            end: null,
-          },
-        },
         CreationDate: {
           date: { start: issue.created_at },
         },
@@ -204,6 +198,12 @@ query ($issueId: ID!) {
         Iteration: {
           select: {
             name: "",
+          },
+        },
+        IterationDate: {
+          date: {
+            start: null,
+            end: null,
           },
         },
       };
