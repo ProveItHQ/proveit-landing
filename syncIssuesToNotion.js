@@ -2,13 +2,11 @@ import { Octokit } from "@octokit/rest";
 import { Client } from "@notionhq/client";
 
 const EMAILS = {
-    "Undiluted7027": "sja164@sfu.ca",
-    "Priyanshsarvaiya": "priyanshsar96@gmail.com",
-    "Luvveer": "luvveerlamba@gmail.com",
-    "cys278": "yasir.chow2002@gmail.com",
-}
-
-(async function () {
+  Undiluted7027: "sja164@sfu.ca",
+  Priyanshsarvaiya: "priyanshsar96@gmail.com",
+  Luvveer: "luvveerlamba@gmail.com",
+  cys278: "yasir.chow2002@gmail.com",
+}(async function () {
   try {
     // Read environment variables
     const notionToken = process.env.NOTION_TOKEN;
@@ -101,12 +99,11 @@ const EMAILS = {
           status: {
             name: issue.type,
           },
+        },
         AssignedTo: {
-            people: issue.assignees.map((assignee) => ({
-                person: {email: EMAILS[assignee.login]}
-            }))
-},
-          },
+          people: issue.assignees.map((assignee) => ({
+            person: { email: EMAILS[assignee.login] },
+          })),
         },
       };
 
