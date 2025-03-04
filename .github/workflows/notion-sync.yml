@@ -1,7 +1,4 @@
-# File: .github/workflows/notion-sync.yml
-# Location: To be created in each repository that needs to sync issues to Notion
-
-name: Sync Issues to Notion
+name: Trigger Notion Sync
 
 on:
   issues:
@@ -11,38 +8,51 @@ on:
         closed,
         reopened,
         edited,
-        deleted,
         assigned,
         unassigned,
         labeled,
         unlabeled,
       ]
-  workflow_dispatch:
-    inputs:
-      sync_all:
-        description: "Sync all issues (yes/no)"
-        required: true
-        default: "no"
 
 jobs:
-  trigger_central_workflow:
+  trigger-sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Determine issue number
-        id: issue
-        run: |
-          if [[ "${{ github.event_name }}" == "issues" ]]; then
-            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event.inputs.sync_all }}" == "yes" ]]; then
-            echo "number=" >> $GITHUB_OUTPUT
-          else
-            echo "number=" >> $GITHUB_OUTPUT
-          fi
+      - name: Extract issue data
+        id: extract-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { issue } = context.payload;
+            const assignees = issue.assignees?.map(a => a.login).join(',') || '';
+            const labels = issue.labels?.map(l => l.name).join(',') || '';
+            return {
+              title: issue.title,
+              body: issue.body || '',
+              number: issue.number.toString(),
+              state: issue.state || 'open',
+              labels: labels,
+              assignees: assignees
+            };
+          result-json: issue_data
 
       - name: Trigger Central Workflow
-        uses: ProveItHQ/notion-workflows/.github/workflows/handle-repo-dispatch@v1
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.CENTRAL_REPO_ACCESS_TOKEN }}
-          repository: ProveItHQ/notion-workflows
-          event-type: sync-issues
-          client-payload: '{"repository": "${{ github.repository }}", "issue_number": "${{ steps.issue.outputs.number }}", "notion_database_id": "${{ secrets.NOTION_DATABASE_ID }}"}'
+          github-token: ${{ secrets.CENTRAL_REPO_ACCESS_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'ProveItHQ',
+              repo: 'notion-workflows',
+              workflow_id: 'sync-issues-to-notion.yml',
+              ref: 'main',
+              inputs: {
+                NOTION_DATABASE_ID: '${{ secrets.NOTION_DATABASE_ID }}',
+                ISSUE_TITLE: '${{ steps.extract-issue.outputs.title }}',
+                ISSUE_BODY: '${{ steps.extract-issue.outputs.body }}',
+                ISSUE_NUMBER: '${{ steps.extract-issue.outputs.number }}',
+                ISSUE_STATE: '${{ steps.extract-issue.outputs.state }}',
+                ISSUE_LABELS: '${{ steps.extract-issue.outputs.labels }}',
+                ISSUE_ASSIGNEES: '${{ steps.extract-issue.outputs.assignees }}'
+              }
+            });
