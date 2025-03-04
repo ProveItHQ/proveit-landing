@@ -17,6 +17,7 @@ on:
         assigned,
         unassigned,
       ]
+  workflow_dispatch:
 
 permissions:
   issues: write
