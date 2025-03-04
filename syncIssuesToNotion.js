@@ -60,6 +60,7 @@ import { Client } from "@notionhq/client";
           },
         },
       });
+      console.log(issue);
 
       // Prepare the property payload for Notion
       const propertiesPayload = {
@@ -88,6 +89,16 @@ import { Client } from "@notionhq/client";
               },
             },
           ],
+        },
+        Type: {
+          status: {
+            name: issue.type,
+          },
+          AssignedTo: {
+            people: {
+              name: issue.user.properties.email,
+            },
+          },
         },
       };
 
