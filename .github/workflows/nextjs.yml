@@ -3,7 +3,7 @@ name: Deploy Next.js site to Pages
 on:
   # Runs on pushes targeting the landing-2 branch
   push:
-    branches: ["landing-2"]
+    branches: ["main"]
 
   # Allows manual workflow execution from the Actions tab
   workflow_dispatch:
