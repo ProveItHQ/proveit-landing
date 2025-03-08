@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "next-themes";
@@ -43,53 +43,37 @@ export default function AudienceBenefits() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const iconColor =
+    mounted && theme === "dark" ? "text-gray-900" : "text-gray-900";
 
   const benefitItems: BenefitItems = {
     recruiters: [
       {
-        icon: (
-          <Clock
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Clock className={`h-10 w-10 ${iconColor}`} />,
         title: "Reduce Time-to-Hire",
         description:
           "Cut your hiring timeline by up to 50% with our streamlined assessment process.",
       },
       {
-        icon: (
-          <UserCheck
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <UserCheck className={`h-10 w-10 ${iconColor}`} />,
         title: "Better Candidate Evaluation",
         description:
           "Assess real skills in action, not just theoretical knowledge from resumes.",
       },
       {
-        icon: (
-          <TrendingUp
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <TrendingUp className={`h-10 w-10 ${iconColor}`} />,
         title: "Improved Hiring Decisions",
         description:
           "Make data-driven decisions with comprehensive performance analytics.",
       },
       {
-        icon: (
-          <Zap
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Zap className={`h-10 w-10 ${iconColor}`} />,
         title: "Streamlined Workflow",
         description:
           "Manage your entire technical interview process in one unified platform.",
@@ -97,49 +81,25 @@ export default function AudienceBenefits() {
     ],
     candidates: [
       {
-        icon: (
-          <Target
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Target className={`h-10 w-10 ${iconColor}`} />,
         title: "Showcase Real Skills",
         description:
           "Demonstrate your abilities in realistic scenarios rather than abstract puzzles.",
       },
       {
-        icon: (
-          <Award
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Award className={`h-10 w-10 ${iconColor}`} />,
         title: "Fair Assessment",
         description:
           "Be evaluated on your actual capabilities in a standardized environment.",
       },
       {
-        icon: (
-          <Briefcase
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Briefcase className={`h-10 w-10 ${iconColor}`} />,
         title: "Career Advancement",
         description:
           "Stand out from other applicants with comprehensive skill demonstrations.",
       },
       {
-        icon: (
-          <CheckCircle
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <CheckCircle className={`h-10 w-10 ${iconColor}`} />,
         title: "Reduced Interview Stress",
         description:
           "Perform in a familiar coding environment that mirrors real-world work.",
@@ -147,49 +107,25 @@ export default function AudienceBenefits() {
     ],
     companies: [
       {
-        icon: (
-          <Building
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Building className={`h-10 w-10 ${iconColor}`} />,
         title: "Build Stronger Teams",
         description:
           "Identify candidates who truly fit your technical and cultural requirements.",
       },
       {
-        icon: (
-          <BarChart
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <BarChart className={`h-10 w-10 ${iconColor}`} />,
         title: "Reduce Hiring Costs",
         description:
           "Lower recruitment expenses by streamlining the technical assessment process.",
       },
       {
-        icon: (
-          <Users
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Users className={`h-10 w-10 ${iconColor}`} />,
         title: "Improve Retention",
         description:
           "Hire candidates who are genuinely suited for your roles and work environment.",
       },
       {
-        icon: (
-          <Shield
-            className={`h-10 w-10 ${
-              theme === "dark" ? "text-gray-900" : "text-black"
-            }`}
-          />
-        ),
+        icon: <Shield className={`h-10 w-10 ${iconColor}`} />,
         title: "Standardized Evaluation",
         description:
           "Ensure consistent, bias-reduced assessment across all technical candidates.",

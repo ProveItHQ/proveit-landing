@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
@@ -15,6 +16,13 @@ import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 
 export default function Footer() {
+  const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -22,7 +30,10 @@ export default function Footer() {
     }
   };
 
-  const { theme } = useTheme();
+  const logoSrc =
+    mounted && theme === "dark"
+      ? "/proveit-logo-dark.svg"
+      : "/proveit-logo-light.svg";
 
   return (
     <footer
@@ -36,11 +47,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-center">
                 <Image
-                  src={
-                    theme === "dark"
-                      ? "/updated_logo_light.svg"
-                      : "/updated_logo.svg"
-                  }
+                  src={logoSrc}
                   alt="ProveIt Logo"
                   width={40}
                   height={25}

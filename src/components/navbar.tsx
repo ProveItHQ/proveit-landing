@@ -13,6 +13,12 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Mount effect to handle client-side only rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,6 +51,12 @@ export default function Navbar() {
     };
   }, []);
 
+  // Choose a consistent logo for server rendering to avoid hydration mismatch
+  const logoSrc =
+    mounted && theme === "dark"
+      ? "/proveit-logo-dark.svg"
+      : "/proveit-logo-light.svg";
+
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md transition-colors ${
@@ -63,11 +75,7 @@ export default function Navbar() {
             transition={{ duration: 0.5 }}
           >
             <Image
-              src={
-                theme === "dark"
-                  ? "/updated_logo_light.svg"
-                  : "/updated_logo.svg"
-              }
+              src={logoSrc}
               alt="ProveIt Logo"
               width={50}
               height={30}
