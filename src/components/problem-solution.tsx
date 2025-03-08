@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle } from "lucide-react"
+import { CheckCircle, XCircle } from "lucide-react";
 
 export default function ProblemSolution() {
   return (
@@ -6,11 +6,13 @@ export default function ProblemSolution() {
       <div className="section-padding">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Traditional Interviews <span className="text-destructive">Fail</span>. We{" "}
+            Traditional Interviews{" "}
+            <span className="text-destructive">Fail</span>. We{" "}
             <span className="text-secondary">Succeed</span>.
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            The interview process hasn't evolved in decades. ProveIt brings a fresh approach that benefits everyone.
+            The interview process hasn&apos;t evolved in decades. ProveIt brings
+            a fresh approach that benefits everyone.
           </p>
         </div>
 
@@ -37,7 +39,7 @@ export default function ProblemSolution() {
           </div>
 
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h3 className="text-2xl font-bold mb-6 text-secondary flex items-center">
+            <h3 className="text-2xl font-bold mb-6 text-blue-600 flex items-center">
               <CheckCircle className="mr-2 h-6 w-6" />
               Our Solution
             </h3>
@@ -50,7 +52,7 @@ export default function ProblemSolution() {
                 "Comprehensive insight into practical abilities and problem-solving",
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-secondary shrink-0 mt-1 mr-2" />
+                  <CheckCircle className="h-5 w-5 text-blue-600 shrink-0 mt-1 mr-2" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -59,6 +61,5 @@ export default function ProblemSolution() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

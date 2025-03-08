@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+// import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -53,10 +54,12 @@ export default function Hero() {
             {/* Platform Preview */}
             <div className="relative bg-gray-900/90 p-4 md:p-6 lg:p-8">
               <div className="relative rounded-lg overflow-hidden">
-                <img
+                <Image
                   src="./sandbox.png"
                   alt="ProveIt platform interface"
                   className="w-full h-auto object-cover scale-105"
+                  width={1200}
+                  height={700}
                 />
                 {/* Enhanced depth effect */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-900/5"></div>

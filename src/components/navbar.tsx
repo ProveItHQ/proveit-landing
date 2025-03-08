@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const navLinks = [
     { name: "Features", href: "#features" },
     { name: "How It Works", href: "#problem-solution" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Benefits", href: "#benefits" },
-  ]
+  ];
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-50 shadow-sm">
@@ -27,10 +27,12 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex p-4">
             <Link href="/" className="flex items-center justify-center">
-              <img 
-                src="/updated_logo.svg" 
-                alt="ProveIt Logo" 
+              <Image
+                src="/updated_logo.svg"
+                alt="ProveIt Logo"
                 className="h-40 w-25"
+                width={100}
+                height={100}
               />
             </Link>
           </div>
@@ -57,7 +59,9 @@ export default function Navbar() {
 
           {/* CTA Button (Desktop) */}
           <div className="hidden md:flex items-center">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full">Join Waitlist</Button>
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full">
+              Join Waitlist
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -68,7 +72,11 @@ export default function Navbar() {
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -89,12 +97,13 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="pt-2">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full">Join Waitlist</Button>
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full">
+                Join Waitlist
+              </Button>
             </div>
           </div>
         </div>
       )}
     </header>
-  )
+  );
 }
-
