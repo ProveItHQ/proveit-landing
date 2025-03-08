@@ -1,4 +1,7 @@
 {
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
     "dependencies": {
         "@notionhq/client": "^2.2.16",
         "@octokit/graphql": "^8.2.1",

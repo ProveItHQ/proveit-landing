@@ -25,12 +25,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
+          <div className="flex p-4">
+            <Link href="/" className="flex items-center justify-center">
               <img 
-                src="/light.svg" 
+                src="/updated_logo.svg" 
                 alt="ProveIt Logo" 
-                className="h-20 w-auto"
+                className="h-40 w-25"
               />
             </Link>
           </div>
