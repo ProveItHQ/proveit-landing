@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 // import Link from "next/link";
 import Image from "next/image";
+import { ThemeToggle } from "./theme-toggle";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { theme } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,92 +34,180 @@ export default function Navbar() {
     { name: "Why Us", sectionId: "support" },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-50 shadow-sm">
+    <motion.header
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md transition-colors ${
+        isScrolled ? "border-b border-gray-200 dark:border-gray-800" : ""
+      }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex p-4">
-            <button
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Image
+              src={
+                theme === "dark"
+                  ? "/updated_logo_light.svg"
+                  : "/updated_logo.svg"
+              }
+              alt="ProveIt Logo"
+              width={50}
+              height={30}
+              className="h-15 w-25 object-cover cursor-pointer"
               onClick={() => scrollToSection("hero")}
-              className="flex items-center justify-center"
-            >
-              <Image
-                src="/updated_logo.svg"
-                alt="ProveIt Logo"
-                className="h-40 w-25"
-                width={100}
-                height={100}
-              />
-            </button>
-          </div>
-          {/* <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold">
-                Prove<span className="gradient-text">It</span>
-              </span>
-            </Link>
-          </div> */}
+            />
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollToSection(link.sectionId)}
-                className="text-gray-700 hover:text-primary font-medium transition-colors"
-              >
-                {link.name}
-              </button>
-            ))}
-          </nav>
+          <div className="hidden md:flex items-center space-x-8">
+            <motion.div
+              className="flex items-center space-x-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {navLinks.map((link) => (
+                <button
+                  key={link.name}
+                  onClick={() => scrollToSection(link.sectionId)}
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  {link.name}
+                </button>
+              ))}
+            </motion.div>
 
-          {/* CTA Button (Desktop) */}
-          <div className="hidden md:flex items-center">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full">
-              Join Waitlist
-            </Button>
+            <motion.div
+              className="flex items-center space-x-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <ThemeToggle />
+              <Button
+                variant="outline"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950"
+                onClick={() => scrollToSection("support")}
+              >
+                Share Opinion
+              </Button>
+              <Button
+                className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                onClick={() => scrollToSection("support")}
+              >
+                Get Early Access
+              </Button>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              type="button"
-              className="text-gray-700 hover:text-primary"
+          <motion.div
+            className="md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-600 dark:text-gray-300"
               onClick={toggleMenu}
-              aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </Button>
+          </motion.div>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t">
-          <div className="px-4 py-4 space-y-3">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollToSection(link.sectionId)}
-                className="block text-gray-700 hover:text-primary font-medium py-2 w-full text-left"
-              >
-                {link.name}
-              </button>
-            ))}
-            <div className="pt-2">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full">
-                Join Waitlist
-              </Button>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 top-20 md:hidden z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Semi-transparent overlay */}
+            <div
+              className="absolute inset-0 bg-black/50 dark:bg-black/60"
+              onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* Menu content */}
+            <div className="relative bg-white dark:bg-gray-900 h-auto shadow-lg">
+              <div className="container mx-auto px-4 py-8 flex flex-col space-y-6">
+                {navLinks.map((link, index) => (
+                  <motion.button
+                    key={link.name}
+                    onClick={() => {
+                      scrollToSection(link.sectionId);
+                      setIsMenuOpen(false);
+                    }}
+                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-lg font-medium transition-colors text-left"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {link.name}
+                  </motion.button>
+                ))}
+                <motion.div
+                  className="flex flex-col space-y-4 pt-4 border-t border-gray-100 dark:border-gray-800"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Theme
+                    </span>
+                    <ThemeToggle />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950 w-full"
+                    onClick={() => {
+                      scrollToSection("support");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Share Opinion
+                  </Button>
+                  <Button
+                    className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 w-full"
+                    onClick={() => {
+                      scrollToSection("support");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Get Early Access
+                  </Button>
+                </motion.div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </header>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

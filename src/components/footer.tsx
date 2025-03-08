@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 export default function Footer() {
   const scrollToSection = (sectionId: string) => {
@@ -21,208 +22,180 @@ export default function Footer() {
     }
   };
 
-  const fadeInUpItem = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
+  const { theme } = useTheme();
 
   return (
     <footer
       id="footer"
-      className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100"
+      className="pt-20 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950"
     >
-      {/* Top Wave SVG */}
-      <div className="w-full">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 120"
-          className="fill-current text-white dark:text-gray-900"
-        >
-          <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
-        </svg>
-      </div>
-
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-16">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row space-y-12 md:space-y-0">
           {/* Company Info - 35% */}
-          <div className="md:w-[35%] space-y-2">
-            <div className="flex items-center">
-              <Image
-                src="/updated_logo.svg"
-                alt="ProveIt Logo"
-                width={50}
-                height={25}
-                className="h-10 w-25 object-cover"
-                onClick={() => scrollToSection("hero")}
-                style={{ cursor: "pointer" }}
-              />
+          <div className="md:w-[35%] space-y-8">
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Image
+                  src={
+                    theme === "dark"
+                      ? "/updated_logo_light.svg"
+                      : "/updated_logo.svg"
+                  }
+                  alt="ProveIt Logo"
+                  width={40}
+                  height={25}
+                  className="mr-3 h-15 w-25 object-cover cursor-pointer"
+                />
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Revolutionizing how companies hire and candidates demonstrate
+                their abilities through project-based technical assessments.
+              </p>
             </div>
 
-            <p className="text-gray-600 dark:text-gray-300 max-w-md">
-              Redefining technical interviews with project-based assessments
-              that showcase real-world skills and abilities.
-            </p>
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="flex items-start space-x-4">
+                <MapPin className="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                <p className="text-gray-600 dark:text-gray-400">
+                  8888 University Drive, Burnaby, BC V5A 1S6, Canada
+                </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Mail className="w-5 h-5 text-blue-500 dark:text-blue-400 flex-shrink-0" />
+                <p className="text-gray-600 dark:text-gray-400">
+                  info@proveit.me
+                </p>
+              </div>
+            </motion.div>
 
-            <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
-              <MapPin size={18} className="text-blue-600 flex-shrink-0" />
-              <span>Burnaby, BC</span>
-            </div>
-
-            <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
-              <Mail size={18} className="text-blue-600 flex-shrink-0" />
-              <span>info@proveit.me</span>
-            </div>
-
-            <div className="flex space-x-4 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.1, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-blue-100 dark:bg-gray-800 p-2 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-gray-700 transition-colors"
+            <motion.div
+              className="flex space-x-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <a
+                href="https://www.linkedin.com/company/proveit-dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
-                <a href="https://www.instagram.com/proveit.ai/" target="_blank">
-                  <Instagram size={20} />
-                </a>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.1, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-blue-100 dark:bg-gray-800 p-2 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-gray-700 transition-colors"
+                <Linkedin className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+              </a>
+              <a
+                href="https://github.com/proveit-org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
-                <a
-                  href="https://www.linkedin.com/company/proveit-ai/"
-                  target="_blank"
-                >
-                  <Linkedin size={20} />
-                </a>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-blue-100 dark:bg-gray-800 p-2 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-gray-700 transition-colors"
+                <Github className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              </a>
+              <a
+                href="https://www.instagram.com/proveitai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
-                <a href="https://github.com/proveit-ai" target="_blank">
-                  <Github size={20} />
-                </a>
-              </motion.button>
-            </div>
+                <Instagram className="w-5 h-5 text-red-500 dark:text-red-400" />
+              </a>
+            </motion.div>
           </div>
 
           {/* Quick Links - 35% */}
-          <div className="md:w-[35%]">
-            <h4 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white relative">
-              <span className="relative z-10">Navigation</span>
-              <span className="absolute bottom-0 left-0 w-12 h-1 bg-blue-600 rounded-full"></span>
-            </h4>
-            <ul className="space-y-3">
-              <motion.li variants={fadeInUpItem}>
+          <div className="md:w-[35%] space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-gray-100">
+                Quick Links
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => scrollToSection("hero")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Home
                 </button>
-              </motion.li>
-              <motion.li variants={fadeInUpItem}>
-                <button
-                  onClick={() => scrollToSection("problem-enriched")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
-                >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
-                  Problem
-                </button>
-              </motion.li>
-              <motion.li variants={fadeInUpItem}>
-                <button
-                  onClick={() => scrollToSection("problem-solution")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
-                >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
-                  Our Approach
-                </button>
-              </motion.li>
-              <motion.li variants={fadeInUpItem}>
                 <button
                   onClick={() => scrollToSection("features")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Features
                 </button>
-              </motion.li>
-              <motion.li variants={fadeInUpItem}>
                 <button
                   onClick={() => scrollToSection("audience-benefits")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Benefits
                 </button>
-              </motion.li>
-              <motion.li variants={fadeInUpItem}>
                 <button
                   onClick={() => scrollToSection("support")}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center group"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
-                  <ArrowRight
-                    size={14}
-                    className="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  />
-                  Why Us
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Support
                 </button>
-              </motion.li>
-            </ul>
+              </div>
+            </motion.div>
           </div>
 
           {/* Newsletter - 30% */}
-          <div className="md:w-[30%]">
-            <h4 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white relative">
-              <span className="relative z-10">Stay Updated</span>
-              <span className="absolute bottom-0 left-0 w-12 h-1 bg-blue-600 rounded-full"></span>
-            </h4>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Subscribe to our newsletter for the latest updates, features, and
-              news about ProveIt.
-            </p>
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-              <Input
-                type="email"
-                placeholder="Your email address"
-                className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              />
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-6 whitespace-nowrap">
-                Subscribe
-              </Button>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-              By subscribing, you agree to our Privacy Policy and consent to
-              receive updates from our company.
-            </p>
+          <div className="md:w-[30%] space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="space-y-6"
+            >
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                Stay Updated
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Subscribe to our newsletter to get updates on our latest
+                features and releases.
+              </p>
+              <div className="flex gap-2">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="dark:bg-gray-800 dark:border-gray-700"
+                />
+                <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white">
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-500">
+                By subscribing, you agree to our Privacy Policy and provide
+                consent to receive updates from our company.
+              </p>
+            </motion.div>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-gray-200 dark:border-gray-700 py-2 flex flex-col md:flex-row justify-center items-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 md:mb-0 text-center md:text-left">
-            © {new Date().getFullYear()} ProveIt. All rights reserved.
-          </p>
-        </div>
+        {/* Bottom section */}
+        <motion.div
+          className="mt-16 pt-8 pb-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-center items-center text-sm text-gray-500 dark:text-gray-400"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <p>&copy; {new Date().getFullYear()} ProveIt. All rights reserved.</p>
+        </motion.div>
       </div>
     </footer>
   );

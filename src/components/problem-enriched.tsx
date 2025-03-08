@@ -134,7 +134,7 @@ export default function ProblemEnriched() {
                   stiffness: 100,
                   delay: 0.2,
                 }}
-                className="inline-block"
+                className="inline-block text-gray-800"
               >
                 Traditional Interviews&nbsp;
               </motion.span>
@@ -155,7 +155,7 @@ export default function ProblemEnriched() {
                   stiffness: 100,
                   delay: 0.6,
                 }}
-                className="inline-block"
+                className="inline-block text-gray-800"
               >
                 . We&nbsp;
               </motion.span>

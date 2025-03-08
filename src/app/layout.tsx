@@ -1,14 +1,30 @@
 import type React from "react";
 import "@/app/globals.css";
-import { Inter } from "next/font/google";
+import { Inter, Montserrat, Oswald } from "next/font/google";
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
+});
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-oswald",
+});
 
 export const metadata: Metadata = {
-  title: "ProveIt - Your Skills, Proven.",
-  description:
-    "The next-generation, project-based interview platform that redefines how candidates and recruiters connect.",
+  title: "ProveIt - Revolutionizing Technical Interviews",
+  description: "Project-based technical assessments for the modern workforce",
 };
 
 export default function RootLayout({
@@ -17,14 +33,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap"
-          rel="stylesheet"
-        ></link>
-      </head>
-      <body className={inter.className}>{children}</body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${montserrat.variable} ${oswald.variable}`}
+    >
+      <body className="min-h-screen bg-background antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

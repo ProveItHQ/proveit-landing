@@ -2,7 +2,7 @@ import { CheckCircle, XCircle } from "lucide-react";
 
 export default function ProblemSolution() {
   return (
-    <section className="bg-gray-50 py-10" id="problem-solution">
+    <section className="bg-gray-50 pb-8" id="problem-solution">
       <div>
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
@@ -30,7 +30,7 @@ export default function ProblemSolution() {
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
                   <XCircle className="h-5 w-5 text-destructive shrink-0 mt-1 mr-2" />
-                  <span>{item}</span>
+                  <span className="text-destructive">{item}</span>
                 </li>
               ))}
             </ul>
@@ -51,7 +51,7 @@ export default function ProblemSolution() {
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-blue-600 shrink-0 mt-1 mr-2" />
-                  <span>{item}</span>
+                  <span className="text-blue-600">{item}</span>
                 </li>
               ))}
             </ul>
