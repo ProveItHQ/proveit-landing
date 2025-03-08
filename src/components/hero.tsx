@@ -1,81 +1,210 @@
-import { Button } from "@/components/ui/button";
-// import { ArrowRight } from "lucide-react";
+"use client";
+
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
 
 export default function Hero() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Parallax and fade effects
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const textY = useTransform(scrollYProgress, [0, 0.5], ["0%", "100%"]);
+
+  // Spring animations for smoother movement
+  const springConfig = { damping: 15, stiffness: 100 };
+  const ySpring = useSpring(y, springConfig);
+  const opacitySpring = useSpring(opacity, springConfig);
+  const scaleSpring = useSpring(scale, springConfig);
+  const textYSpring = useSpring(textY, springConfig);
+
   return (
-    <section className="relative overflow-hidden min-h-screen">
-      {/* Gradient background with more modern colors */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-slate-50/25 to-transparent"></div>
+    <section
+      ref={heroRef}
+      className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
+    >
+      {/* Background Pattern */}
+      <motion.div
+        className="absolute inset-0 opacity-10 dark:opacity-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at center, #2E8FFF 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          y: ySpring,
+          opacity: opacitySpring,
+        }}
+      />
 
-      <div className="section-padding relative z-10 flex flex-col items-center justify-start pt-16 lg:pt-24">
-        {/* Text content with reduced bottom margin on larger screens */}
-        <div className="text-center max-w-4xl mx-auto mb-8 md:mb-12 lg:mb-16">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-            Job Interviews That Feel{" "}
-          </h1>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-            Like The Real Work.
-          </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Showcase skills through real projects - whether you code, lead
-            teams, or analyze data. ProveIt redefines how candidates and
-            recruiters connect.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-6 text-lg rounded-full"
-            >
-              SignUp for Early Access
-            </Button>
-          </div>
-        </div>
-
-        {/* Modern Browser Mockup - Enlarged and more responsive */}
-        <div className="w-full max-w-[95%] xl:max-w-[85%] 2xl:max-w-[1500px] mx-auto relative">
-          {/* Browser Window Frame */}
-          <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl transform-gpu">
-            {/* Browser Top Bar - Scaled up */}
-            <div className="flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 bg-gray-900/90 border-b border-gray-700/50">
-              <div className="flex gap-1.5 md:gap-2">
-                <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-red-500/80"></div>
-                <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-yellow-500/80"></div>
-                <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-green-500/80"></div>
-              </div>
-              {/* URL Bar - Scaled up */}
-              <div className="flex-1 ml-4 md:ml-6">
-                <div className="max-w-sm mx-auto px-3 md:px-4 py-1.5 md:py-2 rounded-md bg-gray-800/50 border border-gray-700/50 text-gray-400 text-sm md:text-base">
-                  proveit.me/softw-1UI45DAMZN
-                </div>
-              </div>
-            </div>
-
-            {/* Platform Preview */}
-            <div className="relative bg-gray-900/90 p-4 md:p-6 lg:p-8">
-              <div className="relative rounded-lg overflow-hidden">
-                <Image
-                  src="./sandbox.png"
-                  alt="ProveIt platform interface"
-                  className="w-full h-auto object-cover scale-105"
-                  width={1200}
-                  height={700}
-                />
-                {/* Enhanced depth effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-900/5"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Feature Callout - Scaled up */}
-          <div
-            className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-gradient-to-r from-blue-600 to-blue-700 
-            text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-medium shadow-lg shadow-blue-500/20 
-            border border-blue-500/20 text-base md:text-lg"
+      {/* Main Content */}
+      <div className="relative container mx-auto px-4 pt-32 pb-20">
+        <motion.div
+          style={{
+            scale: scaleSpring,
+            opacity: opacitySpring,
+          }}
+          className="text-center max-w-5xl mx-auto"
+        >
+          {/* Main Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              type: "spring",
+              damping: 20,
+              stiffness: 100,
+              duration: 1,
+            }}
+            className="space-y-6"
           >
-            Real projects. Real skills. Real impact.
-          </div>
-        </div>
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold mb-6"
+              style={{ y: textYSpring }}
+            >
+              <motion.span
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="block"
+              >
+                Reimagine
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="block gradient-text"
+              >
+                Technical Interviews
+              </motion.span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8"
+            >
+              Replace outdated interview methods with project-based assessments
+              that actually reflect real-world skills across technical, design,
+              and managerial roles.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <motion.a
+                href="#waitlist"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-medium inline-block"
+              >
+                Join Waitlist
+              </motion.a>
+              <motion.a
+                href="#learn-more"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 py-4 rounded-full text-lg font-medium inline-block"
+              >
+                Learn More
+              </motion.a>
+            </motion.div>
+          </motion.div>
+
+          {/* Hero Image */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-16 relative"
+            style={{
+              y: useTransform(scrollYProgress, [0, 1], [0, 200]),
+            }}
+          >
+            <motion.div
+              className="relative mx-auto max-w-4xl"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <Image
+                src="/sandbox.png"
+                alt="ProveIt Platform Preview"
+                width={1200}
+                height={800}
+                className="rounded-xl shadow-2xl dark:bg-gray-800"
+                priority
+              />
+              {/* Floating Elements */}
+              <motion.div
+                className="absolute -right-10 -top-10 w-20 h-20 bg-blue-500 rounded-full opacity-20"
+                animate={{
+                  y: [0, 20, 0],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <motion.div
+                className="absolute -left-5 bottom-20 w-16 h-16 bg-green-500 rounded-full opacity-20"
+                animate={{
+                  y: [0, -20, 0],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          animate={{
+            y: [0, 10, 0],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <motion.div
+            className="w-6 h-10 border-2 border-gray-400 rounded-full relative"
+            whileHover={{ scale: 1.1 }}
+          >
+            <motion.div
+              className="w-1.5 h-1.5 bg-gray-400 rounded-full absolute left-1/2 top-2 transform -translate-x-1/2"
+              animate={{
+                y: [0, 12, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

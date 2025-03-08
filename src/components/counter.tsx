@@ -7,26 +7,19 @@ interface CounterProps {
   value?: number;
   decimal?: boolean;
   suffix?: string;
-  stiffness?: number;
-  damping?: number;
-  textColor?: string;
-  textSize?: string;
-  fontWeight?: string;
+  styling?: string;
 }
 
 export default function Counter({
   value = 100,
   decimal = false,
   suffix = "",
-  stiffness = 300,
-  damping = 100,
-  textColor = "text-destructive",
-  textSize = "text-4xl",
-  fontWeight = "font-bold",
+  styling = "text-destructive text-4xl font-bold",
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, { damping, stiffness });
+  // Fixed spring configuration for optimal counting animation
+  const springValue = useSpring(motionValue, { damping: 50, stiffness: 200 });
 
   useEffect(() => {
     if (!isNaN(value)) {
@@ -49,9 +42,7 @@ export default function Counter({
   }, [springValue, decimal, suffix]);
 
   return (
-    <motion.div
-      className={`flex items-center justify-center ${textSize} ${fontWeight} ${textColor}`}
-    >
+    <motion.div className={`flex items-center justify-center ${styling}`}>
       <span ref={ref}>0{suffix}</span>
     </motion.div>
   );

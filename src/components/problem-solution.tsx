@@ -5,10 +5,8 @@ export default function ProblemSolution() {
     <section className="bg-gray-50 py-20">
       <div className="section-padding">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Traditional Interviews{" "}
-            <span className="text-destructive">Fail</span>. We{" "}
-            <span className="text-secondary">Succeed</span>.
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
+            How ProveIt Empowers Both Sides?
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             The interview process hasn&apos;t evolved in decades. ProveIt brings

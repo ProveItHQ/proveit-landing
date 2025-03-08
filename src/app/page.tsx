@@ -6,6 +6,8 @@ import AudienceBenefits from "@/components/audience-benefits";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ProblemEnriched from "@/components/problem-enriched";
+import ProjectStats from "@/components/project-stats";
+import Support from "@/components/support";
 
 export default function Home() {
   return (
@@ -17,7 +19,9 @@ export default function Home() {
         <ProblemSolution />
         <Features />
         <Testimonials />
+        <ProjectStats />
         <AudienceBenefits />
+        <Support />
         <Footer />
       </main>
     </>
