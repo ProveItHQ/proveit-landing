@@ -2,8 +2,8 @@ import { CheckCircle, XCircle } from "lucide-react";
 
 export default function ProblemSolution() {
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="section-padding">
+    <section className="bg-gray-50 py-10" id="problem-solution">
+      <div>
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
             How ProveIt Empowers Both Sides?

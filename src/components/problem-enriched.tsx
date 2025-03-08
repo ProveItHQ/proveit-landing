@@ -95,7 +95,8 @@ export default function ProblemEnriched() {
   return (
     <section
       ref={sectionRef}
-      className="bg-gray-50 py-20 min-h-screen relative overflow-hidden"
+      className="bg-gray-50 py-10 min-h-screen relative overflow-hidden"
+      id="problem-enriched"
     >
       <motion.div
         style={{

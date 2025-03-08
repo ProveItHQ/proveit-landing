@@ -41,8 +41,8 @@ export default function Features() {
   ];
 
   return (
-    <section className="bg-white">
-      <div className="section-padding">
+    <section className="bg-white" id="features">
+      <div className="pt-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Powerful Features for Modern Hiring

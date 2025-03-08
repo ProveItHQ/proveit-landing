@@ -49,7 +49,10 @@ export default function Support() {
   };
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+    <section
+      className="relative py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden"
+      id="support"
+    >
       {/* Background Pattern */}
       <motion.div
         initial={{ opacity: 0 }}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
+// import Link from "next/link";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -13,11 +13,20 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      setIsMenuOpen(false);
+    }
+  };
+
   const navLinks = [
-    { name: "Features", href: "#features" },
-    { name: "How It Works", href: "#problem-solution" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "Benefits", href: "#benefits" },
+    { name: "Problem", sectionId: "problem-enriched" },
+    { name: "Our Approach", sectionId: "problem-solution" },
+    { name: "Features", sectionId: "features" },
+    { name: "Benefits", sectionId: "audience-benefits" },
+    { name: "Why Us", sectionId: "support" },
   ];
 
   return (
@@ -26,7 +35,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex p-4">
-            <Link href="/" className="flex items-center justify-center">
+            <button
+              onClick={() => scrollToSection("hero")}
+              className="flex items-center justify-center"
+            >
               <Image
                 src="/updated_logo.svg"
                 alt="ProveIt Logo"
@@ -34,7 +46,7 @@ export default function Navbar() {
                 width={100}
                 height={100}
               />
-            </Link>
+            </button>
           </div>
           {/* <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
@@ -47,13 +59,13 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
+              <button
                 key={link.name}
-                href={link.href}
+                onClick={() => scrollToSection(link.sectionId)}
                 className="text-gray-700 hover:text-primary font-medium transition-colors"
               >
                 {link.name}
-              </Link>
+              </button>
             ))}
           </nav>
 
@@ -87,14 +99,13 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t">
           <div className="px-4 py-4 space-y-3">
             {navLinks.map((link) => (
-              <Link
+              <button
                 key={link.name}
-                href={link.href}
-                className="block text-gray-700 hover:text-primary font-medium py-2"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => scrollToSection(link.sectionId)}
+                className="block text-gray-700 hover:text-primary font-medium py-2 w-full text-left"
               >
                 {link.name}
-              </Link>
+              </button>
             ))}
             <div className="pt-2">
               <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full">

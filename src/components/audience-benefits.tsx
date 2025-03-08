@@ -1,289 +1,445 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UserCircle, Building2, TrendingUp } from "lucide-react";
-import Image from "next/image";
+import {
+  Building,
+  Users,
+  UserCheck,
+  Clock,
+  TrendingUp,
+  Zap,
+  Target,
+  Award,
+  Briefcase,
+  CheckCircle,
+  BarChart,
+  Shield,
+  ArrowRight,
+  ChevronDown,
+} from "lucide-react";
+import React from "react";
+
+type BenefitItem = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
+
+type AudienceType = "recruiters" | "candidates" | "companies";
+
+type BenefitItems = {
+  [key in AudienceType]: BenefitItem[];
+};
 
 export default function AudienceBenefits() {
-  const container: Variants = {
-    hidden: { opacity: 0 },
-    show: {
+  const [activeTab, setActiveTab] = useState<AudienceType>("recruiters");
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [expandedSection, setExpandedSection] = useState<AudienceType | null>(
+    "recruiters"
+  );
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+
+  const benefitItems: BenefitItems = {
+    recruiters: [
+      {
+        icon: <Clock className="h-10 w-10 text-primary" />,
+        title: "Reduce Time-to-Hire",
+        description:
+          "Cut your hiring timeline by up to 50% with our streamlined assessment process.",
+      },
+      {
+        icon: <UserCheck className="h-10 w-10 text-primary" />,
+        title: "Better Candidate Evaluation",
+        description:
+          "Assess real skills in action, not just theoretical knowledge from resumes.",
+      },
+      {
+        icon: <TrendingUp className="h-10 w-10 text-primary" />,
+        title: "Improved Hiring Decisions",
+        description:
+          "Make data-driven decisions with comprehensive performance analytics.",
+      },
+      {
+        icon: <Zap className="h-10 w-10 text-primary" />,
+        title: "Streamlined Workflow",
+        description:
+          "Manage your entire technical interview process in one unified platform.",
+      },
+    ],
+    candidates: [
+      {
+        icon: <Target className="h-10 w-10 text-primary" />,
+        title: "Showcase Real Skills",
+        description:
+          "Demonstrate your abilities in realistic scenarios rather than abstract puzzles.",
+      },
+      {
+        icon: <Award className="h-10 w-10 text-primary" />,
+        title: "Fair Assessment",
+        description:
+          "Be evaluated on your actual capabilities in a standardized environment.",
+      },
+      {
+        icon: <Briefcase className="h-10 w-10 text-primary" />,
+        title: "Career Advancement",
+        description:
+          "Stand out from other applicants with comprehensive skill demonstrations.",
+      },
+      {
+        icon: <CheckCircle className="h-10 w-10 text-primary" />,
+        title: "Reduced Interview Stress",
+        description:
+          "Perform in a familiar coding environment that mirrors real-world work.",
+      },
+    ],
+    companies: [
+      {
+        icon: <Building className="h-10 w-10 text-primary" />,
+        title: "Build Stronger Teams",
+        description:
+          "Identify candidates who truly fit your technical and cultural requirements.",
+      },
+      {
+        icon: <BarChart className="h-10 w-10 text-primary" />,
+        title: "Reduce Hiring Costs",
+        description:
+          "Lower recruitment expenses by streamlining the technical assessment process.",
+      },
+      {
+        icon: <Users className="h-10 w-10 text-primary" />,
+        title: "Improve Retention",
+        description:
+          "Hire candidates who are genuinely suited for your roles and work environment.",
+      },
+      {
+        icon: <Shield className="h-10 w-10 text-primary" />,
+        title: "Standardized Evaluation",
+        description:
+          "Ensure consistent, bias-reduced assessment across all technical candidates.",
+      },
+    ],
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        duration: 0.6,
+        staggerChildren: 0.15,
+        ease: "easeOut",
       },
     },
   };
 
-  const listItem: Variants = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 },
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
   };
 
-  const item: Variants = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 },
+  const tabVariants = {
+    inactive: {
+      opacity: 0.7,
+      scale: 0.95,
+      transition: { duration: 0.3 },
+    },
+    active: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.3 },
+    },
   };
+
+  const iconContainerVariants = {
+    initial: {
+      backgroundColor: "rgb(249, 250, 251)",
+      scale: 1,
+      rotate: 0,
+    },
+    hover: {
+      backgroundColor: "rgb(239, 246, 255)",
+      scale: 1.1,
+      rotate: [0, -5, 5, -5, 0],
+      transition: {
+        rotate: {
+          duration: 0.5,
+          ease: "easeInOut",
+        },
+      },
+    },
+  };
+
+  const arrowVariants = {
+    initial: { opacity: 0, x: -10 },
+    hover: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const accordionVariants = {
+    collapsed: {
+      height: 0,
+      opacity: 0,
+      transition: {
+        height: { duration: 0.3 },
+        opacity: { duration: 0.2 },
+      },
+    },
+    expanded: {
+      height: "auto",
+      opacity: 1,
+      transition: {
+        height: { duration: 0.3 },
+        opacity: { duration: 0.3, delay: 0.1 },
+      },
+    },
+  };
+
+  const toggleAccordion = (section: AudienceType) => {
+    if (expandedSection === section) {
+      setExpandedSection(null);
+    } else {
+      setExpandedSection(section);
+    }
+  };
+
+  // Function to render benefit cards
+  const renderBenefitCards = (audience: AudienceType) => (
+    <motion.div
+      className="grid md:grid-cols-2 gap-8"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+      layout
+    >
+      {benefitItems[audience].map((benefit: BenefitItem, index: number) => (
+        <motion.div
+          key={index}
+          className="relative bg-white p-8 rounded-2xl overflow-hidden cursor-pointer"
+          variants={fadeIn}
+          initial="initial"
+          whileHover="hover"
+          animate={hoveredCard === index ? "hover" : "initial"}
+          onHoverStart={() => setHoveredCard(index)}
+          onHoverEnd={() => setHoveredCard(null)}
+          onTap={() => setHoveredCard(hoveredCard === index ? null : index)}
+          transition={{ duration: 0.3 }}
+        >
+          {/* Subtle gradient background that appears on hover */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 opacity-0"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+
+          <div className="relative z-10">
+            <motion.div
+              className="mb-6 inline-flex p-4 rounded-xl"
+              variants={iconContainerVariants}
+            >
+              {benefit.icon}
+            </motion.div>
+
+            <h3 className="text-2xl font-bold mb-4 flex items-center">
+              {benefit.title}
+              <motion.span
+                className="ml-2 inline-flex items-center text-primary"
+                variants={arrowVariants}
+              >
+                <ArrowRight size={18} />
+              </motion.span>
+            </h3>
+
+            <p className="text-gray-600 text-lg leading-relaxed">
+              {benefit.description}
+            </p>
+
+            {/* Subtle line that extends on hover */}
+            <motion.div
+              className="h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 mt-6"
+              initial={{ width: "0%" }}
+              whileHover={{ width: "100%" }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+
+  // Mobile accordion section
+  const renderMobileAccordion = () => (
+    <div className="space-y-6">
+      {(Object.keys(benefitItems) as AudienceType[]).map((audience) => (
+        <div
+          key={audience}
+          className="bg-white rounded-xl overflow-hidden shadow-sm"
+        >
+          <motion.button
+            className="w-full p-6 flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition-colors"
+            onClick={() => toggleAccordion(audience)}
+            whileTap={{ scale: 0.98 }}
+          >
+            <h3 className="text-xl font-bold text-left flex items-center">
+              {audience === "recruiters" && "For Recruiters"}
+              {audience === "candidates" && "For Candidates"}
+              {audience === "companies" && "For Companies"}
+            </h3>
+            <motion.div
+              animate={{ rotate: expandedSection === audience ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ChevronDown className="h-5 w-5 text-gray-500" />
+            </motion.div>
+          </motion.button>
+
+          <motion.div
+            initial="collapsed"
+            animate={expandedSection === audience ? "expanded" : "collapsed"}
+            variants={accordionVariants}
+            className="overflow-hidden"
+          >
+            <div className="p-6 pt-2">{renderBenefitCards(audience)}</div>
+          </motion.div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Desktop tabs section
+  const renderDesktopTabs = () => (
+    <Tabs
+      defaultValue="recruiters"
+      value={activeTab}
+      onValueChange={(value) => setActiveTab(value as AudienceType)}
+      className="w-full max-w-6xl mx-auto"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <TabsList className="grid w-full grid-cols-3 mb-16 h-16 p-1 bg-gray-100/80 backdrop-blur-sm rounded-full">
+          {(Object.keys(benefitItems) as AudienceType[]).map((tab) => (
+            <motion.div
+              key={tab}
+              animate={activeTab === tab ? "active" : "inactive"}
+              variants={tabVariants}
+              className="relative"
+            >
+              <TabsTrigger
+                value={tab}
+                className="text-lg py-4 w-full rounded-full relative z-10"
+              >
+                {tab === "recruiters" && "For Recruiters"}
+                {tab === "candidates" && "For Candidates"}
+                {tab === "companies" && "For Companies"}
+              </TabsTrigger>
+              {activeTab === tab && (
+                <motion.div
+                  className="absolute inset-0 bg-white rounded-full shadow-md"
+                  layoutId="activeTab"
+                  transition={{
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                />
+              )}
+            </motion.div>
+          ))}
+        </TabsList>
+      </motion.div>
+
+      {(Object.keys(benefitItems) as AudienceType[]).map((tabKey) => (
+        <TabsContent key={tabKey} value={tabKey}>
+          {renderBenefitCards(tabKey)}
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
-      {/* Background Pattern */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 dark:opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at center, #3B82F6 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <section
+      id="audience-benefits"
+      ref={sectionRef}
+      className="relative bg-gradient-to-b from-gray-50 to-white pb-24 pt-12 overflow-hidden"
+    >
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-50 rounded-full opacity-50 blur-3xl"></div>
+        <div className="absolute top-1/2 -left-24 w-80 h-80 bg-indigo-50 rounded-full opacity-40 blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-cyan-50 rounded-full opacity-30 blur-3xl"></div>
+      </div>
 
-      <div className="container mx-auto px-4">
+      <div className="container relative mx-auto px-4 z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={headerVariants}
         >
-          <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
             Benefits for Everyone
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            ProveIt creates value for all stakeholders in the hiring process.
-          </motion.p>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Our platform delivers unique advantages for recruiters, candidates,
+            and companies alike.
+          </p>
         </motion.div>
 
-        <Tabs defaultValue="candidates" className="max-w-5xl mx-auto">
-          <TabsList className="flex w-full justify-between space-x-2 rounded-full bg-blue-100/50 p-1 dark:bg-blue-900/20 mb-8">
-            <TabsTrigger
-              value="candidates"
-              className="flex-1 flex items-center justify-center space-x-2 rounded-full px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm"
-            >
-              <UserCircle className="h-5 w-5 mr-2" />
-              <span>For Candidates</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="recruiters"
-              className="flex-1 flex items-center justify-center space-x-2 rounded-full px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm"
-            >
-              <Building2 className="h-5 w-5 mr-2" />
-              <span>For Recruiters</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="investors"
-              className="flex-1 flex items-center justify-center space-x-2 rounded-full px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm"
-            >
-              <TrendingUp className="h-5 w-5 mr-2" />
-              <span>For Investors</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Conditionally render tabs or accordion based on screen size */}
+        <div className="hidden md:block">{renderDesktopTabs()}</div>
 
-          <TabsContent value="candidates">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.3 }}
-              className="grid md:grid-cols-2 gap-8 items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg"
-            >
-              <div>
-                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  For Job Seekers
-                </h3>
-                <motion.ul variants={container} className="space-y-4">
-                  {[
-                    "Showcase your real-world skills beyond what's on your resume",
-                    "Receive fair, objective assessments based on your actual abilities",
-                    "Get detailed feedback to improve your skills, even if you don't get the job",
-                    "Experience less stressful interviews in a comfortable environment",
-                    "Stand out from other candidates with comprehensive skill demonstrations",
-                  ].map((text, index) => (
-                    <motion.li
-                      key={index}
-                      variants={listItem}
-                      className="flex items-start group"
-                    >
-                      <span className="text-blue-600 dark:text-blue-400 mr-3 mt-1">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 12l2 2 4-4"
-                          />
-                        </svg>
-                      </span>
-                      <span className="text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
-                        {text}
-                      </span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </div>
-              <motion.div
-                variants={item}
-                className="relative bg-gradient-to-br from-blue-100 to-white dark:from-blue-900 dark:to-gray-800 p-6 rounded-2xl shadow-lg overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-500/10 dark:from-blue-500/5 dark:via-blue-600/5 dark:to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Image
-                  src="/placeholder.svg?height=300&width=400"
-                  alt="Candidate using ProveIt"
-                  className="w-full h-auto rounded-lg shadow-md transition-transform duration-500 group-hover:scale-105"
-                  width={400}
-                  height={300}
-                />
-              </motion.div>
-            </motion.div>
-          </TabsContent>
+        <div className="md:hidden">{renderMobileAccordion()}</div>
 
-          <TabsContent value="recruiters">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.3 }}
-              className="grid md:grid-cols-2 gap-8 items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg"
-            >
-              <div>
-                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  For Recruiters
-                </h3>
-                <motion.ul variants={container} className="space-y-4">
-                  {[
-                    "Make data-driven hiring decisions based on objective metrics",
-                    "Reduce bad hires and improve team performance",
-                    "Streamline the interview process and save valuable time",
-                    "Evaluate candidates on skills that directly relate to job requirements",
-                    "Access detailed performance reports for easier comparison between candidates",
-                  ].map((text, index) => (
-                    <motion.li
-                      key={index}
-                      variants={listItem}
-                      className="flex items-start group"
-                    >
-                      <span className="text-blue-600 dark:text-blue-400 mr-3 mt-1">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 12l2 2 4-4"
-                          />
-                        </svg>
-                      </span>
-                      <span className="text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
-                        {text}
-                      </span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </div>
-              <motion.div
-                variants={item}
-                className="relative bg-gradient-to-br from-blue-100 to-white dark:from-blue-900 dark:to-gray-800 p-6 rounded-2xl shadow-lg overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-500/10 dark:from-blue-500/5 dark:via-blue-600/5 dark:to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Image
-                  src="/placeholder.svg?height=300&width=400"
-                  alt="Recruiter using ProveIt"
-                  className="w-full h-auto rounded-lg shadow-md transition-transform duration-500 group-hover:scale-105"
-                  width={400}
-                  height={300}
-                />
-              </motion.div>
-            </motion.div>
-          </TabsContent>
+        {/* Stats Section */}
+        <motion.div
+          className="mt-24 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+        >
+          <h3 className="text-2xl font-bold mb-12 text-gray-800">
+            Trusted by industry leaders to transform their hiring process
+          </h3>
 
-          <TabsContent value="investors">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.3 }}
-              className="grid md:grid-cols-2 gap-8 items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg"
-            >
-              <div>
-                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  For Investors
-                </h3>
-                <motion.ul variants={container} className="space-y-4">
-                  {[
-                    "Tap into the $200B+ global recruitment market",
-                    "Invest in a platform that addresses a universal pain point in hiring",
-                    "Benefit from a scalable SaaS model with recurring revenue",
-                    "Support technology that improves diversity and reduces bias in hiring",
-                    "Join early in a revolutionary approach to talent acquisition",
-                  ].map((text, index) => (
-                    <motion.li
-                      key={index}
-                      variants={listItem}
-                      className="flex items-start group"
-                    >
-                      <span className="text-blue-600 dark:text-blue-400 mr-3 mt-1">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 12l2 2 4-4"
-                          />
-                        </svg>
-                      </span>
-                      <span className="text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
-                        {text}
-                      </span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </div>
-              <motion.div
-                variants={item}
-                className="relative bg-gradient-to-br from-blue-100 to-white dark:from-blue-900 dark:to-gray-800 p-6 rounded-2xl shadow-lg overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-500/10 dark:from-blue-500/5 dark:via-blue-600/5 dark:to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Image
-                  src="/placeholder.svg?height=300&width=400"
-                  alt="Investment growth chart"
-                  className="w-full h-auto rounded-lg shadow-md transition-transform duration-500 group-hover:scale-105"
-                  width={400}
-                  height={300}
-                />
-              </motion.div>
-            </motion.div>
-          </TabsContent>
-        </Tabs>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex flex-col items-center">
+              <span className="text-4xl font-bold text-primary mb-2">85%</span>
+              <p className="text-gray-600">Faster hiring process</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl font-bold text-primary mb-2">93%</span>
+              <p className="text-gray-600">Candidate satisfaction</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl font-bold text-primary mb-2">76%</span>
+              <p className="text-gray-600">Reduced hiring costs</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl font-bold text-primary mb-2">
+                4.8/5
+              </span>
+              <p className="text-gray-600">Customer rating</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
