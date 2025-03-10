@@ -37,7 +37,9 @@ export default function Navbar() {
     { name: "Our Approach", sectionId: "problem-solution" },
     { name: "Features", sectionId: "features" },
     { name: "Benefits", sectionId: "audience-benefits" },
+    { name: "About", sectionId: "about" },
     { name: "Why Us", sectionId: "support" },
+    { name: "FAQ", sectionId: "faq" },
   ];
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <motion.div
@@ -85,9 +87,9 @@ export default function Navbar() {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-10">
             <motion.div
-              className="flex items-center space-x-6"
+              className="flex items-center space-x-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -96,7 +98,7 @@ export default function Navbar() {
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.sectionId)}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
                 >
                   {link.name}
                 </button>
@@ -104,7 +106,7 @@ export default function Navbar() {
             </motion.div>
 
             <motion.div
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}

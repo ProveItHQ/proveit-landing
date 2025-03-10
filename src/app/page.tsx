@@ -7,6 +7,8 @@ import Navbar from "@/components/navbar";
 import ProblemEnriched from "@/components/problem-enriched";
 import ProjectStats from "@/components/project-stats";
 import Support from "@/components/support";
+import FAQSection from "@/components/faqs";
+import AboutSection from "@/components/about";
 
 export default function Home() {
   return (
@@ -19,7 +21,9 @@ export default function Home() {
         <Features />
         <ProjectStats />
         <AudienceBenefits />
+        <AboutSection />
         <Support />
+        <FAQSection />
         <Footer />
       </main>
     </>

@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import {
   Linkedin,
   Instagram,
   Github,
+  Twitter,
   Mail,
   MapPin,
   ArrowRight,
@@ -70,7 +71,7 @@ export default function Footer() {
               <div className="flex items-start space-x-4">
                 <MapPin className="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                 <p className="text-gray-600 dark:text-gray-400">
-                  8888 University Drive, Burnaby, BC V5A 1S6, Canada
+                  Burnaby BC, Canada
                 </p>
               </div>
               <div className="flex items-center space-x-4">
@@ -89,7 +90,7 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <a
-                href="https://www.linkedin.com/company/proveit-dev/"
+                href="https://www.linkedin.com/company/proveithq/about"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -97,7 +98,7 @@ export default function Footer() {
                 <Linkedin className="w-5 h-5 text-blue-500 dark:text-blue-400" />
               </a>
               <a
-                href="https://github.com/proveit-org"
+                href="https://github.com/ProveItHQ"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -111,6 +112,14 @@ export default function Footer() {
                 className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 <Instagram className="w-5 h-5 text-red-500 dark:text-red-400" />
+              </a>
+              <a
+                href="https://x.com/ProveItHq25"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                <Twitter className="w-5 h-5 text-blue-500 dark:text-blue-400" />
               </a>
             </motion.div>
           </div>
@@ -135,11 +144,11 @@ export default function Footer() {
                   Home
                 </button>
                 <button
-                  onClick={() => scrollToSection("features")}
+                  onClick={() => scrollToSection("about")}
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
                   <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Features
+                  About
                 </button>
                 <button
                   onClick={() => scrollToSection("audience-benefits")}
@@ -153,7 +162,21 @@ export default function Footer() {
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
                 >
                   <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Support
+                  Why Us?
+                </button>
+                <button
+                  onClick={() => scrollToSection("features")}
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
+                >
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection("faq")}
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center group"
+                >
+                  <ArrowRight className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  FAQ
                 </button>
               </div>
             </motion.div>
@@ -175,7 +198,7 @@ export default function Footer() {
                 Subscribe to our newsletter to get updates on our latest
                 features and releases.
               </p>
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 <Input
                   type="email"
                   placeholder="Enter your email"
@@ -184,7 +207,8 @@ export default function Footer() {
                 <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white">
                   <ArrowRight className="h-4 w-4" />
                 </Button>
-              </div>
+              </div> */}
+              <div className="flex gap-2 ml-embedded" data-form="xkRVMR"></div>
               <p className="text-xs text-gray-500 dark:text-gray-500">
                 By subscribing, you agree to our Privacy Policy and provide
                 consent to receive updates from our company.
