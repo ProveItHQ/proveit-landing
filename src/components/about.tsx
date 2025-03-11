@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Linkedin, Github, Mail } from "lucide-react";
 
 // About component with Tailwind styling
 const AboutSection = () => {
@@ -138,54 +138,162 @@ const AboutSection = () => {
           </motion.div>
           <motion.div variants={fadeInLeft} className="md:w-1/2">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
-              <h3 className="text-2xl font-semibold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300">
+              <h3 className="text-2xl font-semibold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300">
                 The Team
               </h3>
+              <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
+                Students at Simon Fraser University building the future of
+                technical interviews
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Team member cards */}
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl shadow-md p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-100 dark:border-gray-600">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-300 dark:from-blue-400 dark:to-blue-200 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                    FC
+                    SJ
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    Founder & CEO
+                    Sanchit
                   </h4>
-                  <p className="text-center text-gray-600 dark:text-gray-400">
-                    Student at SFU
+                  <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
+                    Full Stack Developer
                   </p>
+                  <div className="flex justify-center space-x-3 mt-2">
+                    <a
+                      href="https://linkedin.com/in/sanchit27"
+                      className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                    <a
+                      href="https://github.com/Undiluted7027"
+                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github size={18} />
+                    </a>
+                    <a
+                      href="mailto:sanchit@proveit.me"
+                      className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Mail size={18} />
+                    </a>
+                  </div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl shadow-md p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-100 dark:border-gray-600">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-300 dark:from-blue-400 dark:to-blue-200 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                    CT
+                    CY
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    CTO
+                    Chowdhury
                   </h4>
-                  <p className="text-center text-gray-600 dark:text-gray-400">
-                    Student at SFU
+                  <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
+                    Frontend Developer
                   </p>
+                  <div className="flex justify-center space-x-2 mt-2">
+                    <a
+                      href="https://www.linkedin.com/in/chowdhuryyasirsayem/"
+                      className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                    <a
+                      href="https://github.com/cys278"
+                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github size={18} />
+                    </a>
+                    <a
+                      href="mailto:yasir@proveit.me"
+                      className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Mail size={18} />
+                    </a>
+                  </div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl shadow-md p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-100 dark:border-gray-600">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-300 dark:from-blue-400 dark:to-blue-200 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                    LD
+                    PS
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    Lead Designer
+                    Priyansh
                   </h4>
-                  <p className="text-center text-gray-600 dark:text-gray-400">
-                    Student at SFU
+                  <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
+                    ML Developer
                   </p>
+                  <div className="flex justify-center space-x-3 mt-2">
+                    <a
+                      href="https://www.linkedin.com/in/priyanshsarvaiya/"
+                      className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                    <a
+                      href="https://github.com/Priyanshsarvaiya"
+                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github size={18} />
+                    </a>
+                    <a
+                      href="mailto:priyansh@proveit.me"
+                      className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Mail size={18} />
+                    </a>
+                  </div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl shadow-md p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-100 dark:border-gray-600">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-300 dark:from-blue-400 dark:to-blue-200 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                    PM
+                    LSL
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    Product Manager
+                    Luveer
                   </h4>
-                  <p className="text-center text-gray-600 dark:text-gray-400">
-                    Student at SFU
+                  <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
+                    Backend Developer
                   </p>
+                  <div className="flex justify-center space-x-3 mt-2">
+                    <a
+                      href="https://www.linkedin.com/in/luvveer-singh-lamba-a78017247/"
+                      className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                    <a
+                      href="https://github.com/Luvveer"
+                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github size={18} />
+                    </a>
+                    <a
+                      href="mailto:luvveer@proveit.me"
+                      className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Mail size={18} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

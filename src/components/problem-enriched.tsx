@@ -18,22 +18,25 @@ interface Citation {
 
 const citations: Citation[] = [
   {
-    id: "bad-hire",
-    source: "Society for Human Resource Management",
-    link: "https://shrm.org/bad-hire-impact",
-    year: "2023",
+    id: "hiring-time-increase",
+    source: "Goodtime.io",
+    link: "https://goodtime.io/blog/talent-operations/hiring-statistics/",
+    year: "2025",
+    // 60%
   },
   {
-    id: "candidate-perspective",
-    source: "Stack Overflow Developer Survey",
-    link: "https://stackoverflow.blog/developer-hiring-2023",
-    year: "2023",
+    id: "hiring-confidence",
+    source: "SmartRecruiters",
+    link: "https://www.smartrecruiters.com/blog/recruitment-statistics-for-2025/",
+    year: "2025",
+    // 15%
   },
   {
     id: "candidate-ghosting",
-    source: "LinkedIn Talent Solutions",
-    link: "https://linkedin.com/talent-solutions/hiring-stats",
-    year: "2023",
+    source: "HRDive",
+    link: "https://www.hrdive.com/news/hiring-managers-responsive-applicants/716173/",
+    year: "2024",
+    // 80%
   },
 ];
 
@@ -95,7 +98,7 @@ export default function ProblemEnriched() {
   return (
     <section
       ref={sectionRef}
-      className="bg-gray-50 py-10 min-h-screen relative overflow-hidden"
+      className="bg-gray-50 py-10 relative overflow-hidden"
       id="problem-enriched"
     >
       <motion.div
@@ -222,20 +225,20 @@ export default function ProblemEnriched() {
                 title={
                   <div className="flex items-start justify-between">
                     <Counter
-                      value={44}
+                      value={15}
                       suffix="%"
                       styling="text-5xl md:text-6xl font-bold text-blue-600"
                     />
                     <button
-                      onClick={() => setActiveCitation("bad-hire")}
+                      onClick={() => setActiveCitation("hiring-confidence")}
                       className="text-gray-400 hover:text-blue-600 transition-colors"
                     >
                       <Info size={20} />
                     </button>
                   </div>
                 }
-                heading="Bad Hire & Skill Gap"
-                subheading="Traditional behavioral Q&A fails to simulate real teamwork."
+                heading="Low Hiring Confidence"
+                subheading="Traditional interviews fail to provide the insights needed for confident hiring choices."
                 titleColor="text-blue-600"
               />
             </motion.div>
@@ -251,20 +254,20 @@ export default function ProblemEnriched() {
                 title={
                   <div className="flex items-start justify-between">
                     <Counter
-                      value={72}
+                      value={60}
                       suffix="%"
                       styling="text-5xl md:text-6xl font-bold text-green-600"
                     />
                     <button
-                      onClick={() => setActiveCitation("candidate-perspective")}
+                      onClick={() => setActiveCitation("hiring-time-increase")}
                       className="text-gray-400 hover:text-green-600 transition-colors"
                     >
                       <Info size={20} />
                     </button>
                   </div>
                 }
-                heading="Candidate's Perspective"
-                subheading="Algorithm puzzles and hypotheticals don't test job readiness."
+                heading="Hiring Takes Longer"
+                subheading="Companies are struggling with prolonged recruitment cycles, losing top candidates to competitors with faster processes."
                 titleColor="text-green-600"
               />
             </motion.div>
@@ -280,7 +283,7 @@ export default function ProblemEnriched() {
                 title={
                   <div className="flex items-start justify-between">
                     <Counter
-                      value={90}
+                      value={80}
                       suffix="%"
                       styling="text-5xl md:text-6xl font-bold text-purple-600"
                     />
@@ -292,8 +295,8 @@ export default function ProblemEnriched() {
                     </button>
                   </div>
                 }
-                heading="Candidates Ghosted"
-                subheading="No feedback = no growth. ProveIt auto-generates 'Skill Gap Reports'."
+                heading="Widespread Ghosting Problem"
+                subheading="The vast majority of hiring managers admit to leaving candidates without feedback or updates during the hiring process."
                 titleColor="text-purple-600"
               />
             </motion.div>

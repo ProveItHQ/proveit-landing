@@ -18,7 +18,7 @@ import { useTheme } from "next-themes";
 
 export default function Footer() {
   const [mounted, setMounted] = useState(false);
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -32,7 +32,7 @@ export default function Footer() {
   };
 
   const logoSrc =
-    mounted && theme === "dark"
+    mounted && (resolvedTheme === "dark" || theme)
       ? "/proveit-logo-dark.svg"
       : "/proveit-logo-light.svg";
 
@@ -211,7 +211,7 @@ export default function Footer() {
               <div className="flex gap-2 ml-embedded" data-form="xkRVMR"></div>
               <p className="text-xs text-gray-500 dark:text-gray-500">
                 By subscribing, you agree to our Privacy Policy and provide
-                consent to receive updates from our company.
+                consent to receive updates from ProveIt.
               </p>
             </motion.div>
           </div>

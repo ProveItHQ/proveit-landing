@@ -12,7 +12,7 @@ import { useTheme } from "next-themes";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Mount effect to handle client-side only rendering
@@ -55,7 +55,7 @@ export default function Navbar() {
 
   // Choose a consistent logo for server rendering to avoid hydration mismatch
   const logoSrc =
-    mounted && theme === "dark"
+    mounted && (resolvedTheme === "dark" || theme)
       ? "/proveit-logo-dark.svg"
       : "/proveit-logo-light.svg";
 

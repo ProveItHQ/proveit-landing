@@ -37,7 +37,7 @@ export default function Features() {
     <section id="features" className="relative py-6 bg-white dark:bg-gray-950">
       {/* Title */}
       <div className="container mx-auto px-4">
-        <div className="text-center mb-20">
+        <div className="text-center mb-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300">
             Redefine Your Interview Process
           </h2>

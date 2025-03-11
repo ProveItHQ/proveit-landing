@@ -149,7 +149,7 @@ const FAQSection = () => {
                     : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="p-6 pt-0 text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="p-6 text-gray-700 dark:text-gray-300 leading-relaxed">
                   <p>{faq.answer}</p>
                 </div>
               </div>
