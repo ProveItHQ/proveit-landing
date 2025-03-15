@@ -2,6 +2,25 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Variables
+
+This project requires environment variables to function properly. Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# Airtable API Key - Get this from your Airtable account
+NEXT_PUBLIC_AIRTABLE_API_KEY=your_airtable_personal_access_token_here
+```
+
+You can copy the `.env.example` file as a starting point:
+
+```bash
+cp .env.example .env.local
+```
+
+Then, replace the placeholder values with your actual API keys.
+
+### Development Server
+
 First, run the development server:
 
 ```bash
@@ -32,5 +51,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+### Setting Up Environment Variables on Vercel
+
+When deploying to Vercel, you need to add your environment variables to your project:
+
+1. Go to your project on the Vercel dashboard
+2. Navigate to Settings > Environment Variables
+3. Add the same environment variables that you have in your `.env.local` file
+4. Deploy your project again to apply the changes
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

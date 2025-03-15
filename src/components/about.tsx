@@ -189,7 +189,7 @@ const AboutSection = () => {
                     CY
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    Chowdhury
+                    Yasir
                   </h4>
                   <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
                     Frontend Developer
@@ -263,7 +263,7 @@ const AboutSection = () => {
                     LSL
                   </div>
                   <h4 className="font-semibold text-center text-gray-900 dark:text-white text-xl mb-1">
-                    Luveer
+                    Luvveer
                   </h4>
                   <p className="text-center text-blue-500 dark:text-blue-400 text-sm mb-3">
                     Backend Developer

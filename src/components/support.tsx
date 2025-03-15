@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import {
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Sparkles, ArrowRight, ChevronRight } from "lucide-react";
 import { Marquee } from "@/components/magicui/marquee";
+import { getBetaTesterCount } from "@/lib/airtable";
 
 // Dynamically import Counter with no SSR to avoid hydration issues
 const Counter = dynamic(() => import("./counter"), { ssr: false });
@@ -32,6 +34,25 @@ const stats = [
 ];
 
 export default function Support() {
+  const [betaTesters, setBetaTesters] = useState<number>(437); // Default fallback value
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function fetchBetaTesters() {
+      try {
+        const count = await getBetaTesterCount();
+        setBetaTesters(count);
+      } catch (error) {
+        console.error("Failed to fetch beta tester count:", error);
+        // Keep the default value if there's an error
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchBetaTesters();
+  }, []);
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -190,11 +211,16 @@ export default function Support() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center text-4xl md:text-6xl font-bold">
-            <Counter value={437} styling="text-blue-600 dark:text-blue-400" />
+            <Counter
+              value={betaTesters}
+              styling="text-blue-600 dark:text-blue-400"
+            />
             <span className="mx-2 text-gray-400 dark:text-gray-500">/</span>
             <span className="text-gray-600 dark:text-gray-300">1000</span>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">Beta Testers</p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            {isLoading ? "Loading beta testers..." : "Beta Testers"}
+          </p>
         </motion.div>
 
         {/* Stats Marquee */}
