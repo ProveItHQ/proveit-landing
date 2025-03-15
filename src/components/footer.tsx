@@ -32,7 +32,7 @@ export default function Footer() {
   };
 
   const logoSrc =
-    mounted && (resolvedTheme === "dark" || theme)
+    mounted && (resolvedTheme === "dark" || theme === "dark")
       ? "/proveit-logo-dark.svg"
       : "/proveit-logo-light.svg";
 

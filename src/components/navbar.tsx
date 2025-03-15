@@ -55,7 +55,7 @@ export default function Navbar() {
 
   // Choose a consistent logo for server rendering to avoid hydration mismatch
   const logoSrc =
-    mounted && (resolvedTheme === "dark" || theme)
+    mounted && (resolvedTheme === "dark" || theme === "dark")
       ? "/proveit-logo-dark.svg"
       : "/proveit-logo-light.svg";
 

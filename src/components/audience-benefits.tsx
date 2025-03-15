@@ -49,7 +49,7 @@ export default function AudienceBenefits() {
   }, []);
 
   const iconColor =
-    mounted && (resolvedTheme === "dark" || theme)
+    mounted && (resolvedTheme === "dark" || theme === "dark")
       ? "text-gray-300"
       : "text-gray-900";
 
