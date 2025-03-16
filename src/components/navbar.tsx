@@ -115,13 +115,23 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950"
-                onClick={() => scrollToSection("support")}
+                onClick={() =>
+                  window.open(
+                    "https://forms.fillout.com/t/mQeHNJSx4qus",
+                    "_self"
+                  )
+                }
               >
                 Share Opinion
               </Button>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-                onClick={() => scrollToSection("support")}
+                onClick={() =>
+                  window.open(
+                    "https://forms.fillout.com/t/mG6LQ4XQkJus",
+                    "_self"
+                  )
+                }
               >
                 Get Early Access
               </Button>
@@ -197,7 +207,10 @@ export default function Navbar() {
                     variant="outline"
                     className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950 w-full"
                     onClick={() => {
-                      scrollToSection("support");
+                      window.open(
+                        "https://forms.fillout.com/t/mQeHNJSx4qus",
+                        "_self"
+                      );
                       setIsMenuOpen(false);
                     }}
                   >
@@ -206,7 +219,10 @@ export default function Navbar() {
                   <Button
                     className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 w-full"
                     onClick={() => {
-                      scrollToSection("support");
+                      window.open(
+                        "https://forms.fillout.com/t/mG6LQ4XQkJus",
+                        "_self"
+                      );
                       setIsMenuOpen(false);
                     }}
                   >

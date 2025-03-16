@@ -270,6 +270,12 @@ export default function Support() {
                   variant="outline"
                   size="lg"
                   className="group relative overflow-hidden bg-white dark:bg-transparent hover:bg-blue-50 dark:hover:bg-blue-950 border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 shadow-sm hover:shadow-md"
+                  onClick={() =>
+                    window.open(
+                      "https://forms.fillout.com/t/mQeHNJSx4qus",
+                      "_self"
+                    )
+                  }
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Share Opinion
@@ -287,9 +293,17 @@ export default function Support() {
                 <Button
                   size="lg"
                   className="group bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+                  onClick={() =>
+                    window.open(
+                      "https://forms.fillout.com/t/mG6LQ4XQkJus",
+                      "_self"
+                    )
+                  }
                 >
-                  Get Early Access
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Get Early Access
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Join our exclusive beta program</TooltipContent>
