@@ -225,7 +225,18 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <p>&copy; {new Date().getFullYear()} ProveIt. All rights reserved.</p>
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            <p>
+              &copy; {new Date().getFullYear()} ProveIt. All rights reserved.
+            </p>
+            <a
+              href="https://tally.so/r/wzLAaM"
+              className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+              rel="noopener"
+            >
+              Have questions? Reach Out
+            </a>
+          </div>
         </motion.div>
       </div>
     </footer>
