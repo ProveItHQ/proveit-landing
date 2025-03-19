@@ -271,10 +271,7 @@ export default function Support() {
                   size="lg"
                   className="group relative overflow-hidden bg-white dark:bg-transparent hover:bg-blue-50 dark:hover:bg-blue-950 border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 shadow-sm hover:shadow-md"
                   onClick={() =>
-                    window.open(
-                      "https://forms.fillout.com/t/mQeHNJSx4qus",
-                      "_self"
-                    )
+                    window.open("https://tally.so/r/3yzaJW", "_self")
                   }
                 >
                   <span className="relative z-10 flex items-center gap-2">

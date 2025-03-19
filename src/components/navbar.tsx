@@ -116,10 +116,7 @@ export default function Navbar() {
                 variant="outline"
                 className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950"
                 onClick={() =>
-                  window.open(
-                    "https://forms.fillout.com/t/mQeHNJSx4qus",
-                    "_self"
-                  )
+                  window.open("https://tally.so/r/3yzaJW", "_self")
                 }
               >
                 Share Opinion
@@ -207,10 +204,7 @@ export default function Navbar() {
                     variant="outline"
                     className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950 w-full"
                     onClick={() => {
-                      window.open(
-                        "https://forms.fillout.com/t/mQeHNJSx4qus",
-                        "_self"
-                      );
+                      window.open("https://tally.so/r/3yzaJW", "_self");
                       setIsMenuOpen(false);
                     }}
                   >
